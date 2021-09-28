@@ -25,6 +25,13 @@
             <span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
             <input type="email" placeholder="邮箱" v-model="form.useremail">
             <input type="password" placeholder="密码" v-model="form.password">
+            <input type="rePassword" placeholder="重新输入密码" v-model="rePassword">
+            <div v-if="password !== rePassword">
+              <p style="color: red">两次输入密码不统一</p>
+            </div>
+            <div v-else>
+              <p style="color: lawngreen">valid</p>
+            </div>
           </div>
           <button class="bbutton" @click="register">注册</button>
         </div>
@@ -55,6 +62,8 @@ export default{
       usernameError: false,
       passwordError: false,
       existed: false,
+      rePasswordError:false,
+      rePassword:'',
       form:{
         id:'',
         useremail:'',
@@ -156,6 +165,43 @@ export default{
           })
       } else {
         alert("填写不能为空！");
+      }
+    },
+
+    /*
+     * 表单信息合法性验证函数
+     * @author WarmCongee
+     */
+    //学号输入是否合法
+    validID(){
+      if(this.form.username.length != 10) {
+        alert("学号输入错误");
+      }
+      return false;
+    },
+    //验证邮箱是否合法
+    validEmail() {
+      var verify = /^\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/;
+      this.emailError = !verify.test(this.useremail);
+    },
+    //验证nickname和realname长度是否合法
+    finiteLengthName(name){
+      return name.length < 10;
+
+    },
+    //验证密码长度是否合法
+    finiteLengthPassword(){
+      if(this.form.username.length >= 32) {
+        alert("密码过长请重新输入");
+        return false;
+      }
+      return true;
+    },
+    //验证注册时两次输入密码是否相同
+    consistentPassword(){
+      this.rePasswordError = false;
+      if(this.form.password != this.rePassword){
+        this.rePasswordError = true;
       }
     }
   }
