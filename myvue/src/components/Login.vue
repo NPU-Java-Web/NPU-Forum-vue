@@ -10,7 +10,7 @@
           <div class="btitle">账户登录</div>
           <div class="bform">
 
-            <input type="text" placeholder="用户名" v-model="form.username">
+            <input type="text" placeholder="学号" v-model="form.id">
             <span class="errTips" v-if="usernameError">* 用户名填写错误 *</span>
             <input type="password" placeholder="密码" v-model="form.password">
             <span class="errTips" v-if="passwordError">* 密码填写错误 *</span>
@@ -21,7 +21,7 @@
         <div class="big-contain" v-else>
           <div class="btitle">创建账户</div>
           <div class="bform">
-            <input type="text" placeholder="用户名" v-model="form.username">
+            <input type="text" placeholder="学号" v-model="form.id">
             <span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
             <input type="email" placeholder="邮箱" v-model="form.useremail">
             <input type="password" placeholder="密码" v-model="form.password">
@@ -56,7 +56,7 @@ export default{
       passwordError: false,
       existed: false,
       form:{
-        username:'',
+        id:'',
         useremail:'',
         password:''
       }
@@ -65,7 +65,7 @@ export default{
   methods:{
     changeType() {
       this.isLogin = !this.isLogin
-      this.form.username = ''
+      this.form.id = ''
       this.form.useremail = ''
       this.form.password = ''
     },
@@ -75,12 +75,12 @@ export default{
       //此步为跳转，应该在登录后执行，先放在这
       this.$router.push("/index")
 
-      if (self.form.username != "" && self.form.password != "") {
+      if (self.form.id != "" && self.form.password != "") {
         self.$axios({
           method:'post',
           url: '',
           data: {
-            username: self.form.username,
+            id: self.form.id,
             password: self.form.password
           }
         })
@@ -101,6 +101,9 @@ export default{
             if(res.data.login==="true")
             {
               alert("登陆成功！");
+              //保存静态变量id，以便后续识别是否登录
+              this.$store.commit("saveLocalid",this.id)
+              //通过 this.$http.state.id获取localid
             }
             else {
               alert(res.data.message)
@@ -119,13 +122,13 @@ export default{
       //此步为跳转，应该在注册后执行，先放在这
       this.$router.push("/index")
 
-      if(self.form.username != "" && self.form.useremail != "" && self.form.password != ""){
+      if(self.form.id != "" && self.form.useremail != "" && self.form.password != ""){
         self.$axios({
           method:'post',
           url: '',
           data: {
-            username: self.form.username,
-            email: self.form.useremail,
+            id: self.form.id,
+            useremail: self.form.useremail,
             password: self.form.password
           }
         })

@@ -9,7 +9,7 @@
   <div style="margin: 20px;"></div>
   <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
     <el-form-item label="id">
-      <el-input v-model="formLabelAlign.id" type="number"></el-input>
+      <el-input v-model="formLabelAlign.id" type="text"></el-input>
     </el-form-item>
     <el-form-item label="真实姓名">
       <el-input v-model="formLabelAlign.realName" type="text"></el-input>
@@ -42,7 +42,7 @@ export default {
     return {
       labelPosition: 'right',
       formLabelAlign: {
-       id:'',
+       id:this.$store.state.localid,
         realName:'',
         nickName:'',
         college:'',
