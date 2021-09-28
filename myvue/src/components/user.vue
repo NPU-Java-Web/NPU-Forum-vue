@@ -52,35 +52,63 @@ export default {
       }
     };
   },
-  methods:{
-    onSubmit(){
+  //创建钩子函数，在页面创建前向服务器发出请求，返回用户信息
+  created() {
+    this.getInfos()
+  },
+  methods: {
+    getInfos() {
       const self = this;
-      if(self.formLabelAlign.realName!=""){
+      if (this.$store.state.localid != '') {
         self.$axios({
-        method:'post',
-        url: '',
-        data: {
-          id:self.formLabelAlign.id,
-          realName:self.formLabelAlign.realName,
-          nickName:self.formLabelAlign.nickName,
-          college:self.formLabelAlign.college,
-          phoneNumber:self.formLabelAlign.phoneNumber,
-          birthday:self.formLabelAlign.birthday,
-          introduction:self.formLabelAlign.introduction
-        }
-      })
-        .then(res=>{
-          console.log(res)
+          method: 'post',
+          url: '',
+          data: {
+            id: self.formLabelAlign.id
+            ///ask:'ask-information'
+          }
+
         })
-        .catch(err => {
-          console.log(err);
-        })
+          .then(res => {
+            this.id = res.data.id
+            this.realName = res.data.realName
+            this.nickName = res.data.nickName
+            this.college = res.data.college
+            this.phoneNumber = res.data.phoneNumber
+            this.birthday = res.data.birthday
+            this.introduction = res.data.introduction
+          })
       }
-      else alert("真实姓名不能为空！")
+    }
+    ,
+    onSubmit() {
+      const self = this;
+      if (self.formLabelAlign.realName != "") {
+        axios({
+          method: 'post',
+          url: '',
+          data: {
+            id: self.formLabelAlign.id,
+            realName: self.formLabelAlign.realName,
+            nickName: self.formLabelAlign.nickName,
+            college: self.formLabelAlign.college,
+            phoneNumber: self.formLabelAlign.phoneNumber,
+            birthday: self.formLabelAlign.birthday,
+            introduction: self.formLabelAlign.introduction
+          }
+        })
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      } else alert("真实姓名不能为空！")
 
     }
   }
-}
+  }
+
 </script>
 
 <style scoped>
