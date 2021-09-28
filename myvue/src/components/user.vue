@@ -1,52 +1,85 @@
 <template>
 <div>
   <h3>用户信息</h3>
-  <el-descriptions class="margin-top" title="" :column="3" :size="size" border>
-    <template slot="extra">
-      <el-button type="primary" size="small">操作</el-button>
-    </template>
-    <el-descriptions-item>
-      <template slot="label">
-        <i class="el-icon-user"></i>
-        用户名
-      </template>
-      kooriookami
-    </el-descriptions-item>
-    <el-descriptions-item>
-      <template slot="label">
-        <i class="el-icon-mobile-phone"></i>
-        手机号
-      </template>
-      18100000000
-    </el-descriptions-item>
-    <el-descriptions-item>
-      <template slot="label">
-        <i class="el-icon-location-outline"></i>
-        居住地
-      </template>
-      xxxxxx
-    </el-descriptions-item>
-    <el-descriptions-item>
-      <template slot="label">
-        <i class="el-icon-tickets"></i>
-        备注
-      </template>
-      <el-tag size="small">学校</el-tag>
-    </el-descriptions-item>
-    <el-descriptions-item>
-      <template slot="label">
-        <i class="el-icon-office-building"></i>
-        联系地址
-      </template>
-      xxxxx
-    </el-descriptions-item>
-  </el-descriptions>
+  <el-radio-group v-model="labelPosition" size="small">
+    <el-radio-button label="left">左对齐</el-radio-button>
+    <el-radio-button label="right">右对齐</el-radio-button>
+    <el-radio-button label="top">顶部对齐</el-radio-button>
+  </el-radio-group>
+  <div style="margin: 20px;"></div>
+  <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
+    <el-form-item label="id">
+      <el-input v-model="formLabelAlign.id" type="number"></el-input>
+    </el-form-item>
+    <el-form-item label="真实姓名">
+      <el-input v-model="formLabelAlign.realName" type="text"></el-input>
+    </el-form-item>
+    <el-form-item label="网名">
+      <el-input v-model="formLabelAlign.nickName" type="text"></el-input>
+    </el-form-item>
+    <el-form-item label="学院">
+      <el-input v-model="formLabelAlign.nickName" type="text"></el-input>
+    </el-form-item>
+    <el-form-item label="手机号">
+      <el-input v-model="formLabelAlign.nickName" type="text"></el-input>
+    </el-form-item>
+    <el-form-item label="生日">
+      <el-input v-model="formLabelAlign.nickName" type="text"></el-input>
+    </el-form-item>
+    <el-form-item label="介绍">
+      <el-input v-model="formLabelAlign.nickName" type="text"></el-input>
+    </el-form-item>
+  </el-form>
+  <el-button type="primary" @click="onSubmit">立即创建</el-button>
 </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: "user"
+  data() {
+    return {
+      labelPosition: 'right',
+      formLabelAlign: {
+       id:'',
+        realName:'',
+        nickName:'',
+        college:'',
+        phoneNumber:'',
+        birthday:'',
+        introduction:''
+      }
+    };
+  },
+  methods:{
+    onSubmit(){
+      const self = this;
+      if(self.formLabelAlign.realName!=""){
+        self.$axios({
+        method:'post',
+        url: '',
+        data: {
+          id:self.formLabelAlign.id,
+          realName:self.formLabelAlign.realName,
+          nickName:self.formLabelAlign.nickName,
+          college:self.formLabelAlign.college,
+          phoneNumber:self.formLabelAlign.phoneNumber,
+          birthday:self.formLabelAlign.birthday,
+          introduction:self.formLabelAlign.introduction
+        }
+      })
+        .then(res=>{
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err);
+        })
+      }
+      else alert("真实姓名不能为空！")
+
+    }
+  }
 }
 </script>
 
