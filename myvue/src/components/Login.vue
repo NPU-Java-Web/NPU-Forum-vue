@@ -9,10 +9,11 @@
         <div class="big-contain" v-if="isLogin">
           <div class="btitle">账户登录</div>
           <div class="bform">
-            <input type="email" placeholder="邮箱" v-model="form.useremail">
-            <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>
+
+            <input type="text" placeholder="用户名" v-model="form.username">
+            <span class="errTips" v-if="usernameError">* 用户名填写错误 *</span>
             <input type="password" placeholder="密码" v-model="form.password">
-            <span class="errTips" v-if="emailError">* 密码填写错误 *</span>
+            <span class="errTips" v-if="passwordError">* 密码填写错误 *</span>
           </div>
           <button class="bbutton" @click="login">登录</button>
         </div>
@@ -51,7 +52,7 @@ export default{
   data(){
     return {
       isLogin:false,
-      emailError: false,
+      usernameError: false,
       passwordError: false,
       existed: false,
       form:{
@@ -74,28 +75,35 @@ export default{
       //此步为跳转，应该在登录后执行，先放在这
       this.$router.push("/index")
 
-      if (self.form.useremail != "" && self.form.password != "") {
+      if (self.form.username != "" && self.form.password != "") {
         self.$axios({
           method:'post',
           url: '',
           data: {
-            email: self.form.useremail,
+            username: self.form.username,
             password: self.form.password
           }
         })
 
 
           .then( res => {
-            switch(res.data){
-              case 0:
-                alert("登陆成功！");
-                break;
-              case -1:
-                this.emailError = true;
-                break;
-              case 1:
-                this.passwordError = true;
-                break;
+            // switch(res.data){
+            //   case 0:
+            //     alert("登陆成功！");
+            //     break;
+            //   case -1:
+            //     this.usernameError = true;
+            //     break;
+            //   case 1:
+            //     this.passwordError = true;
+            //     break;
+            // }
+            if(res.data.login==="true")
+            {
+              alert("登陆成功！");
+            }
+            else {
+              alert(res.data.message)
             }
           })
           .catch( err => {
@@ -122,14 +130,22 @@ export default{
           }
         })
           .then( res => {
-            switch(res.data){
-              case 0:
-                alert("注册成功！");
-                this.login();
-                break;
-              case -1:
-                this.existed = true;
-                break;
+            // switch(res.data){
+            //   case 0:
+            //     alert("注册成功！");
+            //     this.login();
+            //     break;
+            //   case -1:
+            //     this.existed = true;
+            //     break;
+            // }
+            if(res.data.register==="true")
+            {
+              alert("注册成功！");
+              this.login();
+            }
+            else {
+              this.existed = true;
             }
           })
           .catch( err => {
