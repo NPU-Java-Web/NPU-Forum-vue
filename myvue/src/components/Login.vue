@@ -99,21 +99,18 @@ export default{
         return;
       }
       else{
-        this.$router.push("/index");
         self.$axios({
           method:'post',
           url: '',
-          data: {
-            email: self.form.useremail,
+          data: JSON.stringify({
+            id: self.form.id,
             password: self.form.password
-          }
-        })
-
-
-          .then( res => {
+          })
+        }).then( res => {
             switch(res.data){
               case 0:
                 alert("登陆成功！");
+                this.$router.push("/index");
                 break;
               case -1:
                 this.emailError = true;
@@ -151,24 +148,25 @@ export default{
         window.alert("填写不能为空！");
       }
       else{
-        this.$router.push("/index")
         self.$axios({
           method:'post',
           url: '',
-          data: {
-            username: self.form.username,
+          data: JSON.stringify({
+            id: self.form.id,
             email: self.form.useremail,
             password: self.form.password
-          }
+          })
         })
           .then( res => {
             switch(res.data){
               case 0:
                 alert("注册成功！");
-                this.login();
+                this.$router.push("/index")
+                //this.login();
                 break;
               case -1:
                 this.existed = true;
+                alert("该账号已经存在！")
                 break;
             }
           })
@@ -199,8 +197,8 @@ export default{
     //验证邮箱是否合法
     validEmail() {
       const verify = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-      this.emailError = !verify.test(this.useremail);
-      return !this.emailError;
+      //this.emailError = !verify.test(this.useremail);
+      return verify.test(this.useremail);
     },
     //验证nickname和realname长度是否合法
     finiteLengthName(name){
@@ -212,8 +210,9 @@ export default{
       if(this.form.id.length >= 32) {
         alert("密码过长请重新输入");
         return false;
+      }else {
+        return true;
       }
-      return true;
     },
     //验证注册时两次输入密码是否相同
     consistentPassword(){

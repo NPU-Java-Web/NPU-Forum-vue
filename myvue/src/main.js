@@ -8,6 +8,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 //导入全局样式
 import './assets/CSS/global.css'
 import axios from 'axios'
+import VueAxios from 'vue-axios'
+Vue.use(VueAxios,axios);
+Vue.prototype.$axios=axios
 
 Vue.config.productionTip = false
 Vue.use(router);
