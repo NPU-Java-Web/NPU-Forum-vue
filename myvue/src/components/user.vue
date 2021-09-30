@@ -72,8 +72,46 @@ export default {
         .then(res=>{
           console.log(res)
         })
+<<<<<<< Updated upstream
         .catch(err => {
           console.log(err);
+=======
+          .then(res => {
+            self.formLabelAlign.birthday = res.data.birthday
+            self.formLabelAlign.college = res.data.college
+            //id为前端静态库里面存储的，不用接受后端返回值
+          //  this.formLabelAlign.id = res.data.id
+
+
+            self.formLabelAlign.email = res.data.email
+            self.formLabelAlign.introduction = res.data.introduction
+            self.formLabelAlign.nickName = res.data.nickName
+            self.formLabelAlign.phoneNumber = res.data.phoneNumber
+            self.formLabelAlign.realName = res.data.realName
+          })
+      }
+      else{
+        alert("请先登录")
+      }
+    }
+    ,
+    onSubmit() {
+      const self = this;
+      if (this.$store.state.localid !== '') {
+        axios({
+          method: 'post',
+          url: '',
+          data: {
+            id: self.formLabelAlign.id,
+            email:self.formLabelAlign.email,
+            realName: self.formLabelAlign.realName,
+            nickName: self.formLabelAlign.nickName,
+            college: self.formLabelAlign.college,
+            phoneNumber: self.formLabelAlign.phoneNumber,
+            birthday: self.formLabelAlign.birthday,
+            introduction: self.formLabelAlign.introduction
+          }
+>>>>>>> Stashed changes
         })
       }
       else alert("真实姓名不能为空！")
