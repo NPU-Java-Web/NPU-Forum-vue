@@ -48,7 +48,8 @@ export default {
         college:'',
         phoneNumber:'',
         birthday:'',
-        introduction:''
+        introduction:'',
+        email:''
       }
     };
   },
@@ -59,36 +60,37 @@ export default {
   methods: {
     getInfos() {
       const self = this;
-      if (this.$store.state.localid != '') {
+      if (this.$store.state.localid !== '') {
         self.$axios({
-          method: 'post',
-          url: '',
-          data: {
-            id: self.formLabelAlign.id
-            ///ask:'ask-information'
-          }
-
+          method: 'get',
+          url: '/myhome'
         })
           .then(res => {
-            this.id = res.data.id
-            this.realName = res.data.realName
-            this.nickName = res.data.nickName
-            this.college = res.data.college
-            this.phoneNumber = res.data.phoneNumber
-            this.birthday = res.data.birthday
-            this.introduction = res.data.introduction
+            self.formLabelAlign.birthday = res.data.birthday
+            self.formLabelAlign.college = res.data.college
+            //id为前端静态库里面存储的，不用接受后端返回值
+          //  this.formLabelAlign.id = res.data.id
+            self.formLabelAlign.email = res.data.email
+            self.formLabelAlign.introduction = res.data.introduction
+            self.formLabelAlign.nickName = res.data.nickName
+            self.formLabelAlign.phoneNumber = res.data.phoneNumber
+            self.formLabelAlign.realName = res.data.realName
           })
+      }
+      else{
+        alert("请先登录")
       }
     }
     ,
     onSubmit() {
       const self = this;
-      if (self.formLabelAlign.realName != "") {
+      if (this.$store.state.localid !== '') {
         axios({
           method: 'post',
           url: '',
           data: {
             id: self.formLabelAlign.id,
+            email:self.formLabelAlign.email,
             realName: self.formLabelAlign.realName,
             nickName: self.formLabelAlign.nickName,
             college: self.formLabelAlign.college,
@@ -98,12 +100,18 @@ export default {
           }
         })
           .then(res => {
-            console.log(res)
+            if(res.data.status===200)
+            {
+             alert(res.data.message)
+            }
+            else{
+              alert(res.data.message)
+            }
           })
           .catch(err => {
-            console.log(err);
+           alert(err);
           })
-      } else alert("真实姓名不能为空！")
+      } else alert("请先登录")
 
     }
   }
