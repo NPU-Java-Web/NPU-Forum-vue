@@ -1,3 +1,4 @@
+<!--2021.10.1 11：22-->
 <template>
 <div>
   <h3>用户信息</h3>
@@ -40,7 +41,6 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
   data() {
     return {
