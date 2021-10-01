@@ -91,6 +91,7 @@ export default {
         else {
           alert("退出账号失败！")
           console.log(res)
+          alert(res.data.message)
         }
       })
     }

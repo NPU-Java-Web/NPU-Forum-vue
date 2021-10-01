@@ -23,7 +23,7 @@
           <div class="bform">
             <input type="text" placeholder="学号" v-model="form.id">
             <span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
-            <input type="email" placeholder="邮箱" v-model="form.useremail">
+<!--            <input type="email" placeholder="邮箱" v-model="form.useremail">-->
             <input type="password" placeholder="密码" v-model="form.password">
 <!--            <input type="rePassword" placeholder="重新输入密码" v-model="rePassword">-->
 <!--            <div v-if="password !== rePassword">-->
@@ -45,7 +45,7 @@
           </div>
 
             <button class="bbutton" @click="register" style="display: inline">注册</button>:
-            <button class="bbutton" style="display: inline">返回</button>
+            <button class="bbutton" @click="returnhome" style="display: inline">返回</button>
 
         </div>
 <!--        页面翻转-->
@@ -93,6 +93,9 @@ export default{
       this.form.id = ''
       this.form.useremail = ''
       this.form.password = ''
+    },
+    returnhome(){
+      this.$router.push("/index");
     },
     login() {
       const self = this;

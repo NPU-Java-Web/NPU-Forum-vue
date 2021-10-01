@@ -14,7 +14,7 @@ export default new Router({
 
     {
       //这里的Login是上面import的的Login
-
+      name:'login',
       path:'/login',
       component:Login
     },
@@ -22,11 +22,12 @@ export default new Router({
     //先登录，不然进不去主页面
     {
       path:'/',
-      redirect:"/login"
+      redirect:"/index"
     },
     //在主页面实现基本功能
     //路由跳转就是匹配此处的path规则，匹配到就使用path对应的组件，渲染到进行中的route-view处
     {
+      name:'index',
       path:'/index',
       component:Index,
       redirect:'/welcome',
