@@ -23,7 +23,7 @@
           <div class="bform">
             <input type="text" placeholder="学号" v-model="form.id">
             <span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
-            <input type="email" placeholder="邮箱" v-model="form.useremail">
+<!--            <input type="email" placeholder="邮箱" v-model="form.useremail">-->
             <input type="password" placeholder="密码" v-model="form.password">
 <!--            <input type="rePassword" placeholder="重新输入密码" v-model="rePassword">-->
 <!--            <div v-if="password !== rePassword">-->
@@ -45,7 +45,7 @@
           </div>
 
             <button class="bbutton" @click="register" style="display: inline">注册</button>:
-            <button class="bbutton" style="display: inline">返回</button>
+            <button class="bbutton" @click="returnhome" style="display: inline">返回</button>
 
         </div>
 <!--        页面翻转-->
@@ -66,6 +66,8 @@
   </div>
 </template>
 
+
+
 <script>
 export default{
   name:'login-register',
@@ -81,7 +83,7 @@ export default{
         id:'',
         useremail:'',
         password:'',
-        rememberMe:''
+        rememberMe:'true'
       }
     }
   },
@@ -91,6 +93,9 @@ export default{
       this.form.id = ''
       this.form.useremail = ''
       this.form.password = ''
+    },
+    returnhome(){
+      this.$router.push("/index");
     },
     login() {
       const self = this;
@@ -119,9 +124,10 @@ export default{
           .then( res => {
            if(res.data.status===200)
            {
+             console.log(res)
               alert("登陆成功！");
               //保存静态变量id，以便后续识别是否登录
-              this.$store.commit("saveLocalid",this.id)
+              this.$store.commit("saveLocalid",this.form.id)
               //通过 this.$http.state.id获取localid
               //此步为跳转，应该在登录后执行，先放在这
               this.$router.push("/index")
@@ -129,6 +135,7 @@ export default{
             }
             else {
               alert(res.data.message)
+             console.log(res)
             }
           })
           .catch( err => {
@@ -152,15 +159,15 @@ export default{
     register(){
       const self = this;
       //此步为跳转，应该在注册后执行，先放在这
-      this.$router.push("/index")
+      // this.$router.push("/index")
       if(this.validID() === false){
         window.alert("请输入正确的学号");
         // return;
       }
-      else if(this.validEmail() === false){
-        window.alert("请输入正确的邮箱");
-        // return;
-      }
+      // else if(this.validEmail() === false){
+      //   window.alert("请输入正确的邮箱");
+      //   // return;
+      // }
       else if(this.finiteLengthPassword()===false){
         window.alert("密码过长请重新输入");
         // return;
@@ -169,17 +176,21 @@ export default{
         window.alert("两次输入密码不统一");
         // return;
       }
-      else if(self.form.username === "" && self.form.useremail === "" && self.form.password === ""){
+      else if(self.form.username === "" && self.form.password === ""){
         window.alert("填写不能为空！");
       }
   else{
+
         self.$axios({
           method:'post',
           url: '/register',
           data: {
             id: self.form.id,
-            useremail: self.form.useremail,
+            //好像接口不用邮箱
+          //  useremail: self.form.useremail,
             password: self.form.password
+            //好像接口也没用这个
+            //rememberMe:self.form.rememberMe
           }
         })
           .then( res => {
@@ -192,15 +203,19 @@ export default{
             //     this.existed = true;
             //     break;
             // }
-            if(res.data.status==="200")
+            // console.log(res)
+           // alert(res.data.status)
+            if(res.data.status===200)
             {
               alert("注册成功！");
               this.login();
+              console.log(res)
             }
             // else {
             //   this.existed = true;
             // }
             else {
+              console.log(res)
               alert(res.data.message)
             }
           })
@@ -222,10 +237,18 @@ export default{
      */
     //学号输入是否合法
     validID(){
-      if(this.form.username.length !== 10) {
-        alert("学号输入错误");
+      //！！！大坑！！！必须先判断是否有此属性，因为vue的length是取内存中的！
+      if(this.form.username!=null)
+      {
+        var length1 = this.form.username.length
       }
-      return false;
+      if(length1 > 10) {
+        alert("学号输入错误");
+        return false;
+      }
+      else{
+        return true;
+      }
     },
     //验证邮箱是否合法
     validEmail() {
@@ -238,7 +261,11 @@ export default{
     },
     //验证密码长度是否合法
     finiteLengthPassword(){
-      if(this.form.username.length >= 32) {
+      if(this.form.username!=null)
+      {
+        var length1 = this.form.username.length
+      }
+      if(length1 >= 32) {
         alert("密码过长请重新输入");
         return false;
       }
