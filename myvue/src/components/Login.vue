@@ -9,10 +9,11 @@
         <div class="big-contain" v-if="isLogin">
           <div class="btitle">账户登录</div>
           <div class="bform">
-            <input type="email" placeholder="学号" v-model="form.id">
-            <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>
+
+            <input type="text" placeholder="学号" v-model="form.id">
+            <span class="errTips" v-if="usernameError">* 用户名填写错误 *</span>
             <input type="password" placeholder="密码" v-model="form.password">
-            <span class="errTips" v-if="emailError">* 密码填写错误 *</span>
+            <span class="errTips" v-if="passwordError">* 密码填写错误 *</span>
           </div>
           <button class="bbutton" @click="login">登录</button>
         </div>
@@ -20,24 +21,32 @@
         <div class="big-contain" v-else>
           <div class="btitle">创建账户</div>
           <div class="bform">
-            <input type="text" placeholder="用户名" v-model="form.id">
+            <input type="text" placeholder="学号" v-model="form.id">
             <span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
             <input type="email" placeholder="邮箱" v-model="form.useremail">
             <input type="password" placeholder="密码" v-model="form.password">
-            <div>
-              <input type="password" placeholder="确认密码" v-model="rePassword" style="float: left">
-              <div v-if="form.password !== rePassword && rePassword!==''">
-                <p style="color: red">invalid</p>
-              </div>
-              <div v-else-if="form.password === rePassword && rePassword !== ''">
-                <p style="color: lawngreen">valid</p>
-              </div>
-              <div v-else></div>
+<!--            <input type="rePassword" placeholder="重新输入密码" v-model="rePassword">-->
+<!--            <div v-if="password !== rePassword">-->
+<!--              <p style="color: red">两次输入密码不统一</p>-->
+<!--            </div>-->
+<!--            <div v-else>-->
+<!--              <p style="color: lawngreen">valid</p>-->
+<!--            </div>-->
+
+            <input type="password" placeholder="确认密码" v-model="rePassword" style="float: left">
+            <el-checkbox v-model="form.rememberMe">是否记住此用户</el-checkbox>
+            <div v-if="form.password !== rePassword && rePassword!==''">
+              <p style="color: red">invalid</p>
             </div>
+            <div v-else-if="form.password === rePassword && rePassword !== ''">
+              <p style="color: lawngreen">valid</p>
+            </div>
+            <div v-else></div>
           </div>
-          <div>
-            <button class="bbutton" @click="register"style="display: inline">注册</button>:<button class="bbutton">返回</button>
-          </div>
+
+            <button class="bbutton" @click="register" style="display: inline">注册</button>:
+            <button class="bbutton" style="display: inline">返回</button>
+
         </div>
 <!--        页面翻转-->
       </div>
@@ -63,7 +72,7 @@ export default{
   data(){
     return {
       isLogin:false,
-      emailError: false,
+      usernameError: false,
       passwordError: false,
       existed: false,
       rePasswordError:false,
@@ -71,7 +80,8 @@ export default{
       form:{
         id:'',
         useremail:'',
-        password:''
+        password:'',
+        rememberMe:''
       }
     }
   },
@@ -83,44 +93,42 @@ export default{
       this.form.password = ''
     },
     login() {
-
       const self = this;
-
-      if (self.form.useremail === "" && self.form.password === "") {
+      if (self.form.id === "" && self.form.password === "") {
         window.alert("填写不能为空！");
-        return;
+        // return;
       }
       else if(this.validID() === false){
         window.alert("请输入正确的学号");
-        return;
+        // return;
       }
       else if(this.finiteLengthPassword()===false){
         window.alert("密码过长请重新输入");
-        return;
+        // return;
       }
-      else{
-        this.$router.push("/index");
+        else {
         self.$axios({
           method:'post',
-          url: '',
+          //url此处还要修改
+          url: '/login',
           data: {
-            email: self.form.useremail,
+            id: self.form.id,
             password: self.form.password
           }
         })
-
-
           .then( res => {
-            switch(res.data){
-              case 0:
-                alert("登陆成功！");
-                break;
-              case -1:
-                this.emailError = true;
-                break;
-              case 1:
-                this.passwordError = true;
-                break;
+           if(res.data.status===200)
+           {
+              alert("登陆成功！");
+              //保存静态变量id，以便后续识别是否登录
+              this.$store.commit("saveLocalid",this.id)
+              //通过 this.$http.state.id获取localid
+              //此步为跳转，应该在登录后执行，先放在这
+              this.$router.push("/index")
+             this.islogin()
+            }
+            else {
+              alert(res.data.message)
             }
           })
           .catch( err => {
@@ -128,48 +136,72 @@ export default{
           })
       }
     },
+    //登录时向后端发送请求，得到用户的id和姓名来进行下一步渲染
+    islogin(){
+      const self = this
+      self.$axios({
+        method:"get",
+        //url一律要再次修改
+        url:"/islogin"
+      })
+      .then(result => {
+        //存储用户nickname
+        this.$store.commit("saveNickname",result.data.nickName)
+      })
+    },
     register(){
       const self = this;
-
+      //此步为跳转，应该在注册后执行，先放在这
+      this.$router.push("/index")
       if(this.validID() === false){
         window.alert("请输入正确的学号");
-        return;
+        // return;
       }
       else if(this.validEmail() === false){
         window.alert("请输入正确的邮箱");
-        return;
+        // return;
       }
       else if(this.finiteLengthPassword()===false){
         window.alert("密码过长请重新输入");
-        return;
+        // return;
       }
       else if(this.consistentPassword()===false){
         window.alert("两次输入密码不统一");
-        return;
+        // return;
       }
       else if(self.form.username === "" && self.form.useremail === "" && self.form.password === ""){
         window.alert("填写不能为空！");
       }
-      else{
-        this.$router.push("/index")
+  else{
         self.$axios({
           method:'post',
-          url: '',
+          url: '/register',
           data: {
-            username: self.form.username,
-            email: self.form.useremail,
+            id: self.form.id,
+            useremail: self.form.useremail,
             password: self.form.password
           }
         })
           .then( res => {
-            switch(res.data){
-              case 0:
-                alert("注册成功！");
-                this.login();
-                break;
-              case -1:
-                this.existed = true;
-                break;
+            // switch(res.data){
+            //   case 0:
+            //     alert("注册成功！");
+            //     this.login();
+            //     break;
+            //   case -1:
+            //     this.existed = true;
+            //     break;
+            // }
+            if(res.data.status==="200")
+            {
+              alert("注册成功！");
+              this.login();
+            }
+            // else {
+            //   this.existed = true;
+            // }
+            else {
+              alert(res.data.message)
             }
           })
           .catch( err => {
@@ -177,39 +209,36 @@ export default{
           })
       }
     },
-    created() {
-      // Simple POST request with a JSON body using axios
-      const article = { title: "Vue POST Request Example" };
-      axios.post("https://reqres.in/api/articles", article)
-        .then(response => this.articleId = response.data.id);
-    },
-
+    //下面的created mcl暂时不知道啥意思，先放一下
+    // created() {
+    //   // Simple POST request with a JSON body using axios
+    //   const article = { title: "Vue POST Request Example" };
+    //   axios.post("https://reqres.in/api/articles", article)
+    //     .then(response => this.articleId = response.data.id);
+    // },
     /*
      * 表单信息合法性验证函数
      * @author WarmCongee
      */
     //学号输入是否合法
     validID(){
-      if(this.form.id.length != 10) {
-        return false;
-      }else{
-        return true;
+      if(this.form.username.length !== 10) {
+        alert("学号输入错误");
       }
+      return false;
     },
     //验证邮箱是否合法
     validEmail() {
-      const verify = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+      var verify = /^\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/;
       this.emailError = !verify.test(this.useremail);
-      return !this.emailError;
     },
     //验证nickname和realname长度是否合法
     finiteLengthName(name){
       return name.length < 10;
-
     },
     //验证密码长度是否合法
     finiteLengthPassword(){
-      if(this.form.id.length >= 32) {
+      if(this.form.username.length >= 32) {
         alert("密码过长请重新输入");
         return false;
       }
@@ -217,13 +246,9 @@ export default{
     },
     //验证注册时两次输入密码是否相同
     consistentPassword(){
+      this.rePasswordError = false;
       if(this.form.password != this.rePassword){
         this.rePasswordError = true;
-        return false;
-      }
-      else{
-        this.rePasswordError = false;
-        return true;
       }
     }
   }
@@ -273,7 +298,7 @@ export default{
 }
 .bform{
   width: 100%;
-  height: 50%;
+  height: 40%;
   padding: 2em 0;
   display: flex;
   flex-direction: column;
@@ -290,7 +315,7 @@ export default{
 }
 .bform input{
   width: 50%;
-  height: 40px;
+  height: 30px;
   border: none;
   outline: none;
   border-radius: 10px;
@@ -351,7 +376,6 @@ export default{
   font-size: 0.9em;
   cursor: pointer;
 }
-
 .big-box.active{
   left: 0;
   transition: all 2s;

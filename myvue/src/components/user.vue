@@ -9,7 +9,7 @@
   <div style="margin: 20px;"></div>
   <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
     <el-form-item label="id">
-      <el-input v-model="formLabelAlign.id" type="number"></el-input>
+      <el-input v-model="formLabelAlign.id" type="text"></el-input>
     </el-form-item>
     <el-form-item label="真实姓名">
       <el-input v-model="formLabelAlign.realName" type="text"></el-input>
@@ -36,53 +36,39 @@
 
 <script>
 import axios from "axios";
-
 export default {
   data() {
     return {
       labelPosition: 'right',
       formLabelAlign: {
-       id:'',
+       id:this.$store.state.localid,
         realName:'',
         nickName:'',
         college:'',
         phoneNumber:'',
         birthday:'',
-        introduction:''
+        introduction:'',
+        email:''
       }
     };
   },
-  methods:{
-    onSubmit(){
+  //创建钩子函数，在页面创建前向服务器发出请求，返回用户信息
+  created() {
+    this.getInfos()
+  },
+  methods: {
+    getInfos() {
       const self = this;
-      if(self.formLabelAlign.realName!=""){
+      if (this.$store.state.localid !== '') {
         self.$axios({
-        method:'post',
-        url: '',
-        data: {
-          id:self.formLabelAlign.id,
-          realName:self.formLabelAlign.realName,
-          nickName:self.formLabelAlign.nickName,
-          college:self.formLabelAlign.college,
-          phoneNumber:self.formLabelAlign.phoneNumber,
-          birthday:self.formLabelAlign.birthday,
-          introduction:self.formLabelAlign.introduction
-        }
-      })
-        .then(res=>{
-          console.log(res)
+          method: 'get',
+          url: '/myhome'
         })
-<<<<<<< Updated upstream
-        .catch(err => {
-          console.log(err);
-=======
           .then(res => {
             self.formLabelAlign.birthday = res.data.birthday
             self.formLabelAlign.college = res.data.college
             //id为前端静态库里面存储的，不用接受后端返回值
           //  this.formLabelAlign.id = res.data.id
-
-
             self.formLabelAlign.email = res.data.email
             self.formLabelAlign.introduction = res.data.introduction
             self.formLabelAlign.nickName = res.data.nickName
@@ -111,16 +97,24 @@ export default {
             birthday: self.formLabelAlign.birthday,
             introduction: self.formLabelAlign.introduction
           }
->>>>>>> Stashed changes
         })
-      }
-      else alert("真实姓名不能为空！")
-
+          .then(res => {
+            if(res.data.status===200)
+            {
+             alert(res.data.message)
+            }
+            else{
+              alert(res.data.message)
+            }
+          })
+          .catch(err => {
+           alert(err);
+          })
+      } else alert("请先登录")
     }
   }
-}
+  }
 </script>
 
 <style scoped>
-
 </style>

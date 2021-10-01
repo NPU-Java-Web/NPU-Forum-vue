@@ -29,7 +29,7 @@
             active-text-color="T#67C23A"
 
             :router="true">
-          <!--侧边栏以index路由跳转-->
+          <!--侧边栏以index属性路由跳转-->
             <el-submenu index="1">
               <template slot="title">
                 <i class="el-icon-location"></i>
