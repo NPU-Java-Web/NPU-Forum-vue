@@ -41,7 +41,6 @@
 
 <script>
 import axios from "axios";
-
 export default {
   data() {
     return {
@@ -120,13 +119,10 @@ export default {
            alert(err);
           })
       } else alert("请先登录")
-
     }
   }
   }
-
 </script>
 
 <style scoped>
-
 </style>

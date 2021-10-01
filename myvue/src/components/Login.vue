@@ -95,9 +95,7 @@ export default{
       this.form.password = ''
     },
     login() {
-
       const self = this;
-
       if (self.form.id === "" && self.form.password === "") {
         window.alert("填写不能为空！");
         // return;
@@ -120,8 +118,6 @@ export default{
             password: self.form.password
           }
         })
-
-
           .then( res => {
            if(res.data.status===200)
            {
@@ -151,17 +147,14 @@ export default{
         method:"get",
         //url一律要再次修改
         url:"/islogin"
-
       })
       .then(result => {
         //存储用户nickname
         this.$store.commit("saveNickname",result.data.nickName)
       })
     },
-
     register(){
       const self = this;
-
       //此步为跳转，应该在注册后执行，先放在这
       // this.$router.push("/index")
       if(this.validID() === false){
@@ -235,8 +228,6 @@ export default{
     //   axios.post("https://reqres.in/api/articles", article)
     //     .then(response => this.articleId = response.data.id);
     // },
-
-
     /*
      * 表单信息合法性验证函数
      * @author WarmCongee
@@ -264,7 +255,6 @@ export default{
     //验证nickname和realname长度是否合法
     finiteLengthName(name){
       return name.length < 10;
-
     },
     //验证密码长度是否合法
     finiteLengthPassword(){
@@ -410,7 +400,6 @@ export default{
   font-size: 0.9em;
   cursor: pointer;
 }
-
 .big-box.active{
   left: 0;
   transition: all 2s;
