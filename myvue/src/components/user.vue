@@ -9,25 +9,30 @@
   <div style="margin: 20px;"></div>
   <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
     <el-form-item label="id">
-      <el-input v-model="formLabelAlign.id" type="text"></el-input>
+      <el-input v-model="formLabelAlign.id" type="text" :disabled="true"></el-input>
     </el-form-item>
     <el-form-item label="真实姓名">
-      <el-input v-model="formLabelAlign.realName" type="text"></el-input>
+      <el-input v-model="formLabelAlign.realName" type="text" ></el-input>
     </el-form-item>
     <el-form-item label="网名">
       <el-input v-model="formLabelAlign.nickName" type="text"></el-input>
     </el-form-item>
     <el-form-item label="学院">
-      <el-input v-model="formLabelAlign.nickName" type="text"></el-input>
+      <el-input v-model="formLabelAlign.college" type="text"></el-input>
     </el-form-item>
     <el-form-item label="手机号">
-      <el-input v-model="formLabelAlign.nickName" type="text"></el-input>
+      <el-input v-model="formLabelAlign.phoneNumber" type="text"></el-input>
     </el-form-item>
     <el-form-item label="生日">
-      <el-input v-model="formLabelAlign.nickName" type="text"></el-input>
+      <el-input v-model="formLabelAlign.birthday" type="text"></el-input>
     </el-form-item>
     <el-form-item label="介绍">
-      <el-input v-model="formLabelAlign.nickName" type="text"></el-input>
+      <el-input
+        type="textarea"
+        :rows="2"
+        placeholder="请输入内容"
+        v-model="formLabelAlign.introduction">
+      </el-input>
     </el-form-item>
   </el-form>
   <el-button type="primary" @click="onSubmit">立即创建</el-button>
@@ -85,11 +90,11 @@ export default {
     onSubmit() {
       const self = this;
       if (this.$store.state.localid !== '') {
-        axios({
+        self.$axios({
           method: 'post',
-          url: '',
+          url: '/modify/my-information',
           data: {
-            id: self.formLabelAlign.id,
+           // id: self.formLabelAlign.id,
             email:self.formLabelAlign.email,
             realName: self.formLabelAlign.realName,
             nickName: self.formLabelAlign.nickName,
@@ -102,9 +107,12 @@ export default {
           .then(res => {
             if(res.data.status===200)
             {
+              console.log(res)
              alert(res.data.message)
             }
             else{
+              console.log(res)
+
               alert(res.data.message)
             }
           })

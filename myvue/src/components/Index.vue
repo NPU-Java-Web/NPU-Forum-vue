@@ -74,6 +74,25 @@ export default {
   methods:{
     login() {
     this.$router.push('/login')
+    },
+    logout(){
+      const self = this;
+      self.$axios({
+        method:'get',
+        url:'/logout',
+
+      })
+      .then(res=>{
+        if(res.data.logout==="true")
+        {
+          alert("退出账号成功！")
+          console.log(res)
+        }
+        else {
+          alert("退出账号失败！")
+          console.log(res)
+        }
+      })
     }
   }
 }
