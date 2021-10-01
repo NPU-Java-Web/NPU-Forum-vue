@@ -6,6 +6,7 @@ import Index from '../components/Index'
 import welcome from "../components/welcome";
 import user from "../components/user";
 import {use} from "element-ui";
+import {drag} from '../assets/JS/welcome'
 Vue.use(Router);
 
 

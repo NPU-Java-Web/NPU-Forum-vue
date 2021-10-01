@@ -127,6 +127,9 @@ export default {
 </script>
 
 <style scoped>
+.el-main{
+  padding: 0;
+}
 .el-header{
   background-color: #102f6d;
 

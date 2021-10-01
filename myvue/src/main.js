@@ -9,6 +9,8 @@ import store from './store/index'
 //导入全局样式
 import './assets/CSS/global.css'
 import axios from 'axios'
+import {drag} from './assets/JS/welcome'
+Vue.prototype.$drag = drag
 //配置请求的根路径
 axios.defaults.baseURL = '/api'  //关键代码
 Vue.config.productionTip = false
@@ -17,6 +19,7 @@ Vue.use(ElementUI);
 Vue.use(axios)
 Vue.prototype.$axios = axios;
 Vue.prototype.$store = store;
+
 //可使用$http
 //Vue.prototype.$http = axios
 /* eslint-disable no-new */
