@@ -143,8 +143,8 @@ export default {
           })
       }
       else{
-        alert("请先登录")
-       // this.$router.push("/index")
+        alert("未登录无法查看个人信息，请先登录")
+       this.$router.push("/index")
 
       }
     }
