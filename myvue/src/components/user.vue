@@ -12,6 +12,9 @@
     <el-form-item label="id">
       <el-input v-model="formLabelAlign.id" type="text" :disabled="true"></el-input>
     </el-form-item>
+    <el-form-item label="email">
+      <el-input v-model="formLabelAlign.email" type="text"></el-input>
+    </el-form-item>
     <el-form-item label="真实姓名" prop="name" >
       <el-input v-model="formLabelAlign.realName" type="text" placeholder="输入本人真实姓名"></el-input>
     </el-form-item>
@@ -78,13 +81,13 @@ export default {
       labelPosition: 'right',
       formLabelAlign: {
        id:this.$store.state.localid,
+        email:'',
         realName:'',
         nickName:'',
         college:'',
         phoneNumber:'',
         birthday:'',
         introduction:'',
-        email:''
       },
       rules: {
         name: [
