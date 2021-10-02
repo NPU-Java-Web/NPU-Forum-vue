@@ -134,6 +134,7 @@ export default{
              this.islogin()
             }
             else {
+             alert("登陆失败！");
               alert(res.data.message)
              console.log(res)
             }
@@ -180,7 +181,7 @@ export default{
         window.alert("填写不能为空！");
       }
   else{
-
+        //alert(this.form.id)
         self.$axios({
           method:'post',
           url: '/register',
@@ -215,6 +216,7 @@ export default{
             //   this.existed = true;
             // }
             else {
+              alert("注册失败！");
               console.log(res)
               alert(res.data.message)
             }
@@ -238,11 +240,12 @@ export default{
     //学号输入是否合法
     validID(){
       //！！！大坑！！！必须先判断是否有此属性，因为vue的length是取内存中的！
-      if(this.form.username!=null)
+      if(this.form.id)
       {
-        var length1 = this.form.username.length
+        var length1 = this.form.id.length
+       // alert(this.form.username)
       }
-      if(length1 > 10) {
+      if(length1 !==10) {
         alert("学号输入错误");
         return false;
       }

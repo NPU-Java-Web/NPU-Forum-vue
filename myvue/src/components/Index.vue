@@ -102,6 +102,21 @@ export default {
     login() {
     this.$router.push('/login')
     },
+    //每次刷新页面时就调用islogin，服务器便发送用户id
+    islogin() {
+      const self = this
+      self.$axios({
+        method:"get",
+        //url一律要再次修改
+        url:"/islogin"
+      })
+        .then(result => {
+          //存储用户nickname
+          this.$store.commit("saveLocalid",result.data.id)
+          this.$store.commit("saveNickname",result.data.nickName)
+        })
+    },
+    //退出向服务器发送请求，成功则将用户在本地信息删除
     logout(){
       const self = this;
       self.$axios({
@@ -112,6 +127,8 @@ export default {
       .then(res=>{
         if(res.data.logout==="true")
         {
+          this.$store.commit("saveLocalid",'')
+          this.$store.commit("saveNickname",'')
           alert("退出账号成功！")
           console.log(res)
         }
@@ -122,6 +139,13 @@ export default {
         }
       })
     }
+  },
+  //每次刷新页面调用islogin确认登录状态
+  created() {
+    if(this.$store.state.localid){
+      this.islogin()
+    }
+
   }
 }
 </script>
