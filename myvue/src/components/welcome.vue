@@ -41,15 +41,54 @@
   </main>
   <canvas class="background"></canvas>
   </body>
+<!--  <GoTop></GoTop>-->
+<!--  <gotop></gotop>-->
 </template>
 
-
 <script>
+import GoTop from "./GoTop";
 export default {
   name: "welcome",
-created() {
+  components: {GoTop},
+  data(){
+    return{
+      testIdExisted:false
+    }
+
+  },
+  created() {
    // this.$drag()
-}
+      this.islogin()
+
+},
+  methods:{
+    //每次刷新页面进入welcome组件时就调用islogin，服务器便发送用户id
+    islogin() {
+      const self = this
+      self.$axios({
+        method:"get",
+        //url一律要再次修改
+        url:"/islogin"
+      })
+        .then(result => {
+          //存储用户nickname
+          if(result.data.id){
+            this.$store.commit("saveLocalid",result.data.id)
+            this.$store.commit("saveNickname",result.data.nickName)
+            this.data.testIdExisted = true
+          }
+          else{
+            this.data.testIdExisted = false
+          }
+
+        })
+    },
+    //本来下面是要用welcome向index传值，但不太会用routeview子向父传值，所以暂时搁置
+    pushtestIdExisted(){
+      this.$emit('pulltestIdExisted',this.data.testIdExisted)
+    }
+  }
+
 
 }
 import drag from '../assets/JS/welcome'
