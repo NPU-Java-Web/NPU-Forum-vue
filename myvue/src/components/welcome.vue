@@ -48,7 +48,7 @@
 export default {
   name: "welcome",
 created() {
-    this.$drag()
+   // this.$drag()
 }
 
 }
@@ -107,7 +107,7 @@ h1:hover {
   letter-spacing: 0.5rem;
   font-family: "ROBOTO", sans-serif;
   font-weight: 300;
-  color: #faebd7;
+  color: #ffffff;
   z-index: 4;
 }
 
@@ -218,5 +218,29 @@ a {
   right: 0;
   z-index: -1;
 }
-
+#tab-pwa{
+  background-image: url("../assets/1.jpg");
+  background-size:cover;
+  background-attachment:fixed;
+}
+#tab-graphql{
+  background-image: url("../assets/2.jpg");
+  background-size:cover;
+  background-attachment:fixed;
+}
+#tab-mocha{
+  background-image: url("../assets/6.jpg");
+  background-size:cover;
+  background-attachment:fixed;
+}
+#tab-jest{
+  background-image: url("../assets/4.jpg");
+  background-size:cover;
+  background-attachment:fixed;
+}
+#tab-docker{
+  background-image: url("../assets/5.jpg");
+  background-size:cover;
+  background-attachment:fixed;
+}
 </style>
