@@ -5,7 +5,7 @@
     <el-header>
       <div>
         <img src="../assets/NPU下载.png" alt="">
-        <span style="font-size: 25px" >论坛</span>
+        <span style="font-size: 20px" >NPU论坛</span>
       </div>
       <div>
         <el-menu
@@ -34,7 +34,7 @@
         </el-menu>
       </div>
 <!--      点击登录则跳转到登录页面-->
-      <div>      <el-button type="info" @click="login" class="Login">登录</el-button>
+      <div>      <el-button type="info" @click="login" class="Login" v-if="ifIdNotExisted">登录</el-button>
         <el-button type="info" @click="logout">退出</el-button>
       </div>
 
@@ -90,13 +90,26 @@
 <!--        渲染主页面-->
         <router-view></router-view>
       </el-main>
+
     </el-container>
+    <GoTop></GoTop>
   </el-container>
 
 </template>
 
 <script>
+import GoTop from "./GoTop";
+import welcome from "./welcome";
 export default {
+  data(){
+    return{
+      ifIdNotExisted:true
+    }
+
+  },
+  components:{
+    GoTop
+  },
   name: "Home",
   methods:{
     login() {
@@ -144,6 +157,10 @@ export default {
   created() {
     if(this.$store.state.localid){
       this.islogin()
+      this.ifIdNotExisted = false
+    }
+    else {
+      this.ifIdNotExisted = true
     }
 
   }

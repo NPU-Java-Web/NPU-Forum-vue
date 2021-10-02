@@ -417,6 +417,7 @@ export default{
   border-top-right-radius: inherit;
   border-bottom-right-radius: inherit;
   transform: translateX(-100%);
+
   transition: all 2s;
 }
 </style>
