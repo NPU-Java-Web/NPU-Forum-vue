@@ -65,7 +65,10 @@ export default {
 <style scoped>
 .GoTop {
   position: fixed;
-  background-color: #f8f8f8;
+  background-color: #b3cbee;
+  /*background-image: url("../assets/向上.jpg");*/
+  /*background-size:cover;*/
+  /*background-attachment:fixed;*/
   border-radius: 50%;
   height: 40px;
   width: 40px;

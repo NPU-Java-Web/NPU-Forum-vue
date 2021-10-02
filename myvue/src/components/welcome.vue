@@ -8,8 +8,9 @@
     <h2>WELCOME </h2>
     <h2>FREE WORD  ||  FREE WORLD</h2>
     <div class="nav-container">
+<!--      下面的每一个链接都是整花活的地方-->
       <a class="nav-tab" href="">GREAT</a>
-      <a class="nav-tab" href="#tab-graphql">ACTIVE</a>
+      <a class="nav-tab" href="#/show01">ACTIVE</a>
       <a class="nav-tab" href="#tab-docker">FREE</a>
       <a class="nav-tab" href="#tab-mocha">WIDE</a>
       <a class="nav-tab" href="#tab-jest">CONVENIENT</a>
