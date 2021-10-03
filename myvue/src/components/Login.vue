@@ -87,6 +87,12 @@ export default{
       }
     }
   },
+  created() {
+    const self = this
+    if(self.$store.state.localid !== ''&&self.$store.state.localid !== null){
+      alert("已登录，请确认是否重新登录")
+    }
+  },
   methods:{
     changeType() {
       this.isLogin = !this.isLogin

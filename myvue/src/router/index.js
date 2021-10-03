@@ -7,6 +7,7 @@ import welcome from "../components/welcome";
 import user from "../components/user";
 import {use} from "element-ui";
 import {drag} from '../assets/JS/welcome'
+import show01 from "../components/show01";
 Vue.use(Router);
 
 
@@ -42,6 +43,11 @@ export default new Router({
 
         }
       ]
+    },
+    {
+      name:'show01',
+      path:'/show01',
+      component:show01
     }
   ]
 });

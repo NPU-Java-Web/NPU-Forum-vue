@@ -8,8 +8,9 @@
     <h2>WELCOME </h2>
     <h2>FREE WORD  ||  FREE WORLD</h2>
     <div class="nav-container">
+<!--      下面的每一个链接都是整花活的地方-->
       <a class="nav-tab" href="">GREAT</a>
-      <a class="nav-tab" href="#tab-graphql">ACTIVE</a>
+      <a class="nav-tab" href="#/show01">ACTIVE</a>
       <a class="nav-tab" href="#tab-docker">FREE</a>
       <a class="nav-tab" href="#tab-mocha">WIDE</a>
       <a class="nav-tab" href="#tab-jest">CONVENIENT</a>
@@ -58,11 +59,18 @@ export default {
   },
   created() {
    // this.$drag()
+<<<<<<< HEAD
       this.islogin()
 
 },
   methods:{
     //每次刷新页面进入welcome组件时就调用islogin，服务器便发送用户id
+=======
+  //alert("111")
+  this.islogin()
+},
+  methods:{
+>>>>>>> mcl_branch
     islogin() {
       const self = this
       self.$axios({
@@ -72,6 +80,7 @@ export default {
       })
         .then(result => {
           //存储用户nickname
+<<<<<<< HEAD
           if(result.data.id){
             this.$store.commit("saveLocalid",result.data.id)
             this.$store.commit("saveNickname",result.data.nickName)
@@ -89,6 +98,16 @@ export default {
     }
   }
 
+=======
+          if(result.data.id!==''&&result.data.id!==null){
+            this.$store.commit("saveLocalid",result.data.id)
+            this.$store.commit("saveNickname",result.data.nickName)
+          }
+
+        })
+    }
+  }
+>>>>>>> mcl_branch
 
 }
 import drag from '../assets/JS/welcome'
