@@ -117,6 +117,7 @@ export default {
     },
     //每次刷新页面时就调用islogin，服务器便发送用户id
     islogin() {
+      //alert("执行islogin")
       const self = this
       self.$axios({
         method:"get",
@@ -125,8 +126,18 @@ export default {
       })
         .then(result => {
           //存储用户nickname
-          this.$store.commit("saveLocalid",result.data.id)
-          this.$store.commit("saveNickname",result.data.nickName)
+          if(result.data.id!==''&&result.data.id!==null){
+            this.$store.commit("saveLocalid",result.data.id)
+            this.$store.commit("saveNickname",result.data.nickName)
+           // alert("index页面的islogin执行成功")
+           // alert(result.data.id)
+          }
+          else {
+           // alert("index页面的islogin执行失败")
+           // alert(result.data)
+          }
+
+          //alert(result.data.id)
         })
     },
     //退出向服务器发送请求，成功则将用户在本地信息删除
@@ -138,7 +149,7 @@ export default {
 
       })
       .then(res=>{
-        if(res.data.logout==="true")
+        if(res.data.status==200)
         {
           this.$store.commit("saveLocalid",'')
           this.$store.commit("saveNickname",'')
@@ -151,18 +162,27 @@ export default {
           alert(res.data.message)
         }
       })
+    },
+    chooseIfNotExisted(){
+     // alert(this.$store.state.localid)
+      if(this.$store.state.localid===''||this.$store.state.localid===null){
+
+        this.ifIdNotExisted = true
+      }
+      else {
+        this.ifIdNotExisted = false
+      }
+    //  alert(this.ifIdNotExisted )
     }
   },
   //每次刷新页面调用islogin确认登录状态
   created() {
-    if(this.$store.state.localid){
-      this.islogin()
-      this.ifIdNotExisted = false
-    }
-    else {
-      this.ifIdNotExisted = true
-    }
+    //!!注意先调用index的created，再调用welcome的created，先父后子
+    //若是刷新页面的话，这个页面的localid就没了，而且vue无论如何都先执行 this.chooseIfNotExisted()，虽然我用islogin修改localid，
+    //但并不能同步刷新登录按钮，表明vue先渲染组件再执行发送信息的函数。只要用户不自动刷新页面，就没事
+    this.islogin()
 
+    this.chooseIfNotExisted()
   }
 }
 </script>

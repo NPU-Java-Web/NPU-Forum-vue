@@ -124,7 +124,8 @@ export default {
   methods: {
     getInfos() {
       const self = this;
-      if (this.$store.state.localid !== '') {
+     // alert(this.$store.state.localid)
+      if (self.$store.state.localid !== ''&&self.$store.state.localid !== null) {
         self.$axios({
           method: 'get',
           url: '/myhome'

@@ -50,7 +50,27 @@ export default {
   name: "welcome",
 created() {
    // this.$drag()
-}
+  //alert("111")
+  this.islogin()
+},
+  methods:{
+    islogin() {
+      const self = this
+      self.$axios({
+        method:"get",
+        //url一律要再次修改
+        url:"/islogin"
+      })
+        .then(result => {
+          //存储用户nickname
+          if(result.data.id!==''&&result.data.id!==null){
+            this.$store.commit("saveLocalid",result.data.id)
+            this.$store.commit("saveNickname",result.data.nickName)
+          }
+
+        })
+    }
+  }
 
 }
 import drag from '../assets/JS/welcome'
