@@ -8,7 +8,7 @@
     <h2>WELCOME </h2>
     <h2>FREE WORD  ||  FREE WORLD</h2>
     <div class="nav-container">
-<!--      下面的每一个链接都是整花活的地方-->
+      <!--      下面的每一个链接都是整花活的地方-->
       <a class="nav-tab" href="">GREAT</a>
       <a class="nav-tab" href="#/show01">ACTIVE</a>
       <a class="nav-tab" href="#tab-docker">FREE</a>
@@ -42,35 +42,18 @@
   </main>
   <canvas class="background"></canvas>
   </body>
-<!--  <GoTop></GoTop>-->
-<!--  <gotop></gotop>-->
 </template>
 
+
 <script>
-import GoTop from "./GoTop";
 export default {
   name: "welcome",
-  components: {GoTop},
-  data(){
-    return{
-      testIdExisted:false
-    }
-
-  },
   created() {
-   // this.$drag()
-<<<<<<< HEAD
-      this.islogin()
-
-},
+    // this.$drag()
+    //alert("111")
+    this.islogin()
+  },
   methods:{
-    //每次刷新页面进入welcome组件时就调用islogin，服务器便发送用户id
-=======
-  //alert("111")
-  this.islogin()
-},
-  methods:{
->>>>>>> mcl_branch
     islogin() {
       const self = this
       self.$axios({
@@ -80,25 +63,6 @@ export default {
       })
         .then(result => {
           //存储用户nickname
-<<<<<<< HEAD
-          if(result.data.id){
-            this.$store.commit("saveLocalid",result.data.id)
-            this.$store.commit("saveNickname",result.data.nickName)
-            this.data.testIdExisted = true
-          }
-          else{
-            this.data.testIdExisted = false
-          }
-
-        })
-    },
-    //本来下面是要用welcome向index传值，但不太会用routeview子向父传值，所以暂时搁置
-    pushtestIdExisted(){
-      this.$emit('pulltestIdExisted',this.data.testIdExisted)
-    }
-  }
-
-=======
           if(result.data.id!==''&&result.data.id!==null){
             this.$store.commit("saveLocalid",result.data.id)
             this.$store.commit("saveNickname",result.data.nickName)
@@ -107,7 +71,6 @@ export default {
         })
     }
   }
->>>>>>> mcl_branch
 
 }
 import drag from '../assets/JS/welcome'
