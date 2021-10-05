@@ -53,6 +53,9 @@
     <el-form-item label="手机号" prop="number" >
       <el-input v-model="formLabelAlign.phoneNumber" type="text" placeholder="输入11位手机号"></el-input>
     </el-form-item>
+    <el-form-item label="邮箱"  >
+      <el-input v-model="formLabelAlign.email" type="text" placeholder="输入邮箱"></el-input>
+    </el-form-item>
     <el-form-item label="生日" required>
         <el-form-item prop="date1">
           <el-date-picker type="date" placeholder="选择日期" v-model="formLabelAlign.birthday" style="width: 100%;"></el-date-picker>

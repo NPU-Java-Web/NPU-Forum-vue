@@ -10,6 +10,7 @@ import store from './store/index'
 import './assets/CSS/global.css'
 import axios from 'axios'
 import {drag} from './assets/JS/welcome'
+
 //Vue.prototype.$drag = drag
 //配置请求的根路径
 axios.defaults.baseURL = '/api'  //关键代码
