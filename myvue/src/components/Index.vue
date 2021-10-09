@@ -4,7 +4,7 @@
 <!--    //头部-->
     <el-header>
       <div>
-        <a href="welcome.vue">
+        <a href="welcome">
         <el-image :src="require('../assets/npu-logo.png')"  style="height: 100%">
         </el-image>
         </a>
