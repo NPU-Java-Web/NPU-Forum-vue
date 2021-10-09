@@ -4,8 +4,10 @@
 <!--    //头部-->
     <el-header>
       <div>
-        <img src="../assets/NPU下载.png" alt="">
-        <span style="font-size: 20px" >NPU论坛</span>
+        <a href="welcome">
+        <el-image :src="require('../assets/npu-logo.png')"  style="height: 100%">
+        </el-image>
+        </a>
       </div>
       <div>
         <el-menu
@@ -34,8 +36,13 @@
         </el-menu>
       </div>
 <!--      点击登录则跳转到登录页面-->
-      <div>      <el-button type="info" @click="login" class="Login" v-if="ifIdNotExisted">登录</el-button>
-        <el-button type="info" @click="logout">退出</el-button>
+      <div>
+        <el-button v-if="ifIdNotExisted"  @click="login" class="Login">
+          <p style="color: #ffffff">登录</p>
+        </el-button>
+        <el-button v-else  @click="logout">
+          <p style="color: #ffffff">退出</p>
+        </el-button>
       </div>
 
     </el-header>
@@ -210,8 +217,8 @@ export default {
   height: 100%;
 }
 .el-button{
-  background-color: #102f6d;
-  width: 100px;
+  background: #20B2AA;
+  width: 80px;
   border: none;
   font-size: 15px;
   font-family:"宋体"
@@ -221,7 +228,7 @@ export default {
   left: 80%;
 }
 .Login{
-  left: 10px;
+  float:right
 }
 
 /*.el-menu{*/
