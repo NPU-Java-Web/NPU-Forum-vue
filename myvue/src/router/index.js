@@ -8,6 +8,10 @@ import user from "../components/user";
 import {use} from "element-ui";
 import {drag} from '../assets/JS/welcome'
 import show01 from "../components/show01";
+import releasepost from "../components/releasepost";
+import homepageone from "../components/homepageone";
+import posts from "../components/posts";
+import personal from "../components/personal";
 Vue.use(Router);
 
 
@@ -34,13 +38,35 @@ export default new Router({
       component:Index,
       redirect:'/welcome',
       children:[
-        {path:'/welcome',
+        {
+          name:"welcome",
+          path:'/welcome',
           component:welcome
         },
         {
+          name:'user',
           path:'/user',
           component:user
-
+        },
+        {
+          name:'releasepost',
+          path:'/releasepost',
+          component:releasepost
+        },
+        {
+          name:'homepageone',
+          path:'/homepageone',
+          component:homepageone
+        },
+        {
+          name:'posts',
+          path:'/posts/:postsId',
+          component:posts
+        },
+        {
+          name:'personal',
+          path:'/personal/:id',
+          component:personal
         }
       ]
     },

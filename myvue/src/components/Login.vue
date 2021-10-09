@@ -117,6 +117,7 @@ export default{
         window.alert("密码过长请重新输入");
         // return;
       }
+
         else {
         self.$axios({
           method:'post',
@@ -182,6 +183,10 @@ export default{
       else if(this.consistentPassword()===false){
         window.alert("两次输入密码不统一");
         // return;
+      }
+      else if(this.form.password!==this.rePassword)
+      {
+        alert("两次输入密码不一致!")
       }
       else if(self.form.username === "" && self.form.password === ""){
         window.alert("填写不能为空！");
