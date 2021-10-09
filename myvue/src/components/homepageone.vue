@@ -61,7 +61,7 @@ export default {
       const self = this;
       self.$axios({
         method:'get',
-        url:'/home/1/100/1/1'
+        url:'/homepage/1/100/1/1'
       })
       .then(res=>{
         if(res.data.status===200)

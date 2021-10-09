@@ -72,6 +72,7 @@ if(this.$store.state.localid===''||this.$store.state.localid===null){
           if(res.data.status===200)
           {
             alert(res.data.message)
+            console.log(res)
             self.postsId=res.data.postsId
           }
           else {
