@@ -1,5 +1,6 @@
 <template>
   <div class="right">
+
     <div class="article">
       <div
         class="articleItem"
@@ -9,6 +10,16 @@
               $router.push({ name: 'posts', params: { postsId: item.postsId } })
             "
       >
+        <div class="userAvatar">
+          <img
+            :src="
+                   require('../assets/defaultAvatar.jpg')
+                "
+            alt=""
+            lazy
+            fit="cover"
+          />
+        </div>
         <div class="ItemCenter">
           <div class="title">{{ item.conciseTitle }}</div>
           <div class="publishDate">
@@ -18,6 +29,15 @@
             class="content mdContent"
             v-html="item.conciseContent"
           ></div>
+          <div class="articleImg">
+            <img
+
+              :src="require('../assets/background.jpg')"
+              class="articleImgItem"
+              fit="contain"
+              lazy
+            />
+          </div>
         </div>
         <div class="ItemRight">
           <div class="replyCount">
@@ -30,6 +50,17 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="bottom">
+      <!-- 分页组件 -->
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="100"
+        :current-page="this.$route.query.page * 1"
+        @current-change="changePage"
+      >
+      </el-pagination>
     </div>
     <GoTop></GoTop>
     </div>
@@ -61,7 +92,7 @@ export default {
       const self = this;
       self.$axios({
         method:'get',
-        url:'/homepage/1/100/1/1'
+        url:'/homepage/1/10/'+this.$route.query.page+'/1'
       })
       .then(res=>{
         if(res.data.status===200)
@@ -72,11 +103,33 @@ export default {
           this.eachPage = res.data.eachPage
           this.pagination = res.data.pagination
           this.order = res.data.order
+          console.log(res)
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
         }
         else {
+          console.log(res)
           alert(res.data.message)
         }
       })
+    },
+    // 切换分页的回调
+    changePage(e) {
+      // console.log(e);
+      // this.currentPage = e;
+      this.$router.push({
+        name: "homepageone",
+        query: { typeId: this.$route.query.typeId, page: e },
+      });
+      this.getInfos()
+      // if (this.$route.query.typeId == 0) {
+      //   // 查询全部文章
+      //   this.getAllArticle();
+      // } else {
+      //   this.getArticleById(this.$route.query.typeId);
+      // }
     }
   }
 

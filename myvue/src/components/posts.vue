@@ -2,11 +2,10 @@
 <!--用$route.params.postsId获得参数-->
 
   <div class="articleDetailContainer">
-    <h1>{{postsId}}</h1>
     <div class="articleDetail">
       <div class="left">
         <div class="card">
-<!--          <img :src="articleData.articleImage" alt="" class="coverImg" />-->
+          <img :src="require('../assets/background.jpg')" alt="" class="coverImg" />
           <div class="leftContent">
             <div class="title">
               {{postsTitle}}
@@ -69,81 +68,389 @@
         </div>
         <div class="card leftContent commentArea">
           <!-- 评论区 -->
-          <comment-area
-            :commentData="commentData"
-            :floorCommentList="floorCommentList"
-            :currentPage="currentCommentPage"
-            @reFreshComment="({ type, index }) => reFreshComment(type, index)"
-            @getFloorCommentList="({ id, index }) => getFloorComment(id, index)"
-            @changePage="changeCommentPage"
-          ></comment-area>
+
+          <div class="commentArea">
+            <div class="commentText">
+              评论区 ({{ this.floorList.length ? this.floorList.length : 0 }})
+            </div>
+            <div class="commentInput">
+              <el-input
+                type="textarea"
+                class="commentTextArea"
+                maxlength="140"
+                show-word-limit
+                v-model="newCommentData.content"
+                placeholder="留下你的评论"
+              ></el-input>
+              <div class="submitCommentButton">
+                <el-button
+                  size="mini"
+                  round
+                  @click="submitComment"
+                  class="submitComment"
+                  type="primary"
+                >评论</el-button
+                >
+              </div>
+            </div>
+            <div
+              class="commentItem"
+              v-for="(item, index) in floorList"
+              :key="index"
+            >
+              <div class="commentItemContainer" >
+                <div class="commentItemArea">
+                  <div class="userAvatar">
+                    <!-- :src="item.commentUserAvatar" -->
+                    <img
+                      class="avatar"
+                      :src="require('../assets/defaultAvatar.jpg') "
+                      alt=""
+                    />
+                  </div>
+                  <div class="commentInfo">
+                    <div class="author userInfo">
+                      <div
+                        class="authorName userNickName"
+                        @click="gotoPersonal(item.landlordId)"
+                      >
+                        {{ item.landlordName }}
+                      </div>
+                    </div>
+                    <div class="commentContent">
+                      {{ item.floorContent }}
+                    </div>
+                    <!-- 评论控制区 -->
+                    <div class="commentContorl">
+                      <div class="publishDate commentDate">
+                        {{ item.floorTime }}
+                      </div>
+                      <div class="commentContorlArea">
+                        <div
+                          class="commentContorlItem checkReply"
+                          v-if="
+                    item.commentList.length == 0
+                  "
+                        >
+                          查看回复 {{ "(" + item.commentList.length + ")" }}
+                        </div>
+                        <div class="commentContorlItem">
+                          <i class="el-icon-check"></i>
+                        </div>
+                        <div
+                          class="commentContorlItem"
+                          @click="
+                    replyCurrentComment(
+                      item.floorId,
+                     item.landlordName,
+                     1
+                    )
+                  "
+                        >
+                          <i class="el-icon-chat-dot-round"></i>
+                        </div>
+                        <div
+                          v-if="item.landlordId == thisId"
+                          class="commentContorlItem"
+                          @click="
+                    deleteCurrentCommentFloor(item.floorId)
+                  "
+                        >
+                          <i class="el-icon-delete-solid"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<!--                 楼层评论-->
+
+                <div
+                  class="floorComment"
+                  v-if="item.commentList[0] && item.commentList[0].commentId"
+                >
+                  <div
+                    class="floorCommentItemContainer"
+                    v-for="(i, idx) in item.commentList"
+                    :key="idx"
+                  >
+                    <div class="floorCommentItem">
+                      <div
+                        class="floorCommentUser"
+                        @click="gotoPersonal(i.commentatorId)"
+                      >
+                        {{ i.commentatorName }}:&nbsp;
+                      </div>
+                      <div class="floorCommentContent">
+                        {{ i.commentContent }}
+                      </div>
+                      <div class="replyBtn">
+<!--                        <div-->
+<!--                          class=""-->
+<!--                          @click="-->
+<!--                    replyCurrentComment(-->
+<!--                      i.commentId,-->
+<!--                      i.commentUserNickName,-->
+<!--                      index-->
+<!--                    )-->
+<!--                  "-->
+<!--                        >-->
+<!--                          回复-->
+<!--                        </div>-->
+                        <div
+                          v-if="i.commentatorId == thisId"
+                          @click="
+                    deleteCurrentComment(i.commentId)
+                  "
+                        >
+                          删除
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-<!--      <div class="right">-->
-<!--        &lt;!&ndash; 用户信息卡片 &ndash;&gt;-->
-<!--        <user-info-card :userId="articleData.authorId"></user-info-card>-->
-<!--        <positioning-card></positioning-card>-->
-<!--      </div>-->
+      <div class="right">
+        <!-- 用户信息卡片 -->
+        <user-info-card :userId="floorList[0].landlordId"></user-info-card>
+      </div>
     </div>
+    <GoTop></GoTop>
   </div>
 
 </template>
 
 <script>
+import UserInfoCard from "./UserInfoCard";
+import GoTop from "./GoTop";
 export default {
   name: "posts",
-  data(){
-    return{
-      postsId:this.$route.params.postsId,
-      category:'',
-      postsTitle:'',
-      views:'',
-      floors:'',
-      updateTime:'',
-      eachPage:'',
-      pagination:'',
-      order:'',
-      floorList:[]
+  components: {
+    UserInfoCard,
+    GoTop
+  },
+  data() {
+    return {
+      // 发表评论数据
+      newCommentData: {
+        content: "",
+        replyId: 0,
+        articleId: this.$route.params.postsId,
+      },
+
+      // 楼层回复时commentInput的初始长度和初始值
+      floorCommentOriginData: {
+        length: 0,
+        value: "",
+        rootIndex: 0,
+      },
+
+      //当前用户id
+      thisId: this.$store.state.localid,
+      //从url获得文章id
+      postsId: this.$route.params.postsId,
+      category: '',
+      postsTitle: '',
+      views: '',
+      floors: '',
+      updateTime: '',
+      eachPage: '',
+      pagination: '',
+      order: '',
+      floorList: [],
+      floorNumber: '',
     }
   },
   created() {
     this.getposts()
   },
-  methods:{
-    getposts(){
+  methods: {
+    //初始化页面
+    getposts() {
       const self = this
-      let url ='/posts/'+this.postsId+'/100/1/1'
+      let url = '/posts/' + this.postsId + '/100/1/1'
       self.$axios({
-        method:'get',
-        url:url
+        method: 'get',
+        url: url
       })
-      .then(res=>{
-        if(res.data.status===200)
-        {
-          alert(res.data.message)
-          this.floorList=res.data.floorList
-          this.postsTitle=res.data.postsTitle
-          this.category = res.data.category
-          this.views = res.data.views
-          this.floors= res.data.floors
-          this.updateTime = res.data.updateTime
-          this.eachPage = res.data.eachPage
-          this.pagination = res.data.pagination
-          this.order = res.data.order
-        }
-        else{
-          alert(res.data.message)
-        }
-      })
+        .then(res => {
+          if (res.data.status === 200) {
+            alert(res.data.message)
+            this.floorList = res.data.floorList
+            this.postsTitle = res.data.postsTitle
+            this.category = res.data.category
+            this.views = res.data.views
+            this.floors = res.data.floors
+            this.updateTime = res.data.updateTime
+            this.eachPage = res.data.eachPage
+            this.pagination = res.data.pagination
+            this.order = res.data.order
+            console.log(res)
+          } else {
+            alert(res.data.message)
+            console.log(res)
+          }
+        })
 
     },
     //跳转到个人页面
-    gotoPersonal(id){
+    gotoPersonal(id) {
       this.$router.push({
-        name:'personal',
-        params:{id:id}
+        name: 'personal',
+        params: {id: id}
       })
+    },
+    //发新楼层+新评论
+    submitComment() {
+      const self = this
+      if(self.floorCommentOriginData.rootIndex===0){
+        if (self.$store.state.localid !== '' && self.$store.state.localid !== null) {
+          self.$axios({
+            method: 'post',
+            url: '/floor/new',
+            data: {
+              postsId: self.newCommentData.articleId,
+              content: self.newCommentData.content
+            }
+          })
+            .then(res => {
+              if (res.data.status === 200) {
+                self.floorId = res.data.floorId
+                self.floorNumber = res.data.floorNumber
+                console.log(res)
+                alert(res.data.message)
+
+                // 重置所有数据
+                this.newCommentData = {
+                  content: "",
+                  replyId: 0,
+                  articleId: self.$route.params.id,
+                };
+                this.floorCommentOriginData = {
+                  length: 0,
+                  value: "",
+                };
+
+                this.getposts()
+              }
+
+            })
+        } else {
+          alert("未登录无法发布评论，请先登录")
+
+        }
+      }
+      else if(self.floorCommentOriginData.rootIndex===1){
+        if (self.$store.state.localid !== '' && self.$store.state.localid !== null) {
+          self.$axios({
+            method: 'post',
+            url: '/comment/new',
+            data: {
+              floorId: self.newCommentData.replyId,
+              content: self.newCommentData.content
+            }
+          })
+            .then(res => {
+              if (res.data.status === 200) {
+                console.log(res)
+                alert(res.data.message)
+
+                // 重置所有数据
+                this.newCommentData = {
+                  content: "",
+                  replyId: 0,
+                  articleId: this.$route.params.id,
+                };
+                this.floorCommentOriginData = {
+                  length: 0,
+                  value: "",
+                };
+
+                this.getposts()
+              }
+
+            })
+        } else {
+          alert("未登录无法发布评论，请先登录")
+
+        }
+      }
+
+    },
+    //删除楼层
+    deleteCurrentCommentFloor(id) {
+      const self = this
+      self.$axios({
+        method: 'delete',
+        url: '/floor/' + id
+      })
+        .then(res => {
+          if (res.data.status === 200) {
+            alert("删除楼层成功")
+            console.log(res)
+            this.getposts()
+          } else {
+            console.log(res)
+            alert(res.data.message)
+          }
+        })
+    },
+    //删除评论
+    deleteCurrentComment(id) {
+      const self = this
+      self.$axios({
+        method: 'delete',
+        url: '/comment/' + id
+      })
+        .then(res => {
+          if (res.data.status === 200) {
+            alert("删除评论成功")
+            console.log(res)
+            this.getposts()
+          } else {
+            console.log(res)
+            alert(res.data.message)
+          }
+        })
+    },
+    replyCurrentComment(id, name, index) {
+
+      if (this.$store.state.localid !== '' && this.$store.state.localid !== null) {
+        this.newCommentData.replyId = id;
+        this.newCommentData.content = `@${name}: `;
+        // 记录当前长度
+        this.floorCommentOriginData.length = this.newCommentData.content.length;
+        this.floorCommentOriginData.value = this.newCommentData.content;
+        this.floorCommentOriginData.rootIndex = index;
+
+        // 滚动到评论框 并让评论框获取焦点
+        this.scrollToCommentInput();
+      } else {
+        alert("登录后才能评论哦!")
+      }
+    },
+    // 滚动到评论框
+    scrollToCommentInput() {
+      let commentArea = document.querySelector(".commentArea");
+      // console.log(commentArea.offsetTop);
+      // 减去顶部栏高度和20px的间距
+      window.scrollTo({
+        top: commentArea.offsetTop - 94,
+        behavior: "smooth",
+      });
+
+      let input = document.querySelector(".commentTextArea");
+      // 阻止focus定位
+      input.children[0].focus({ preventScroll: true });
     }
+
+
   }
 }
 </script>
@@ -321,5 +628,189 @@ export default {
   width: 100%;
   height: 300px;
   object-fit: cover;
+}
+
+
+.commentContent {
+  font-size: 15px;
+  color: #111;
+  line-height: 23px;
+  word-break: break-all;
+}
+
+.commentText {
+  font-size: 18px;
+  font-weight: 600;
+  color: rgb(44, 44, 44);
+  margin-bottom: 15px;
+}
+
+.commentItem {
+  margin: 10px 0 30px;
+}
+
+.commentInfo {
+  width: 100%;
+}
+
+.commentItemArea {
+  display: flex;
+  margin: 10px 0 10px;
+}
+
+.userAvatar {
+  width: 50px;
+  margin-right: 15px;
+}
+
+.userAvatar .avatar {
+  width: 45px;
+  height: 45px;
+}
+
+.userInfo {
+  margin: 4px 0;
+  flex: 1;
+}
+
+.commentContent {
+  font-size: 14px;
+}
+
+.contentImg {
+  margin: 20px 0;
+}
+
+.commentContorl {
+  position: relative;
+  color: rgb(136, 136, 136);
+  width: 100%;
+}
+
+.commentContorlArea {
+  display: flex;
+  position: absolute;
+  right: 10px;
+  top: -5px;
+  align-items: center;
+}
+
+.commentContorlItem {
+  margin: 1px 0px 1px 10px;
+}
+
+.commentContorlItem i {
+  cursor: pointer;
+}
+
+.floorComment {
+  font-size: 15px;
+  color: #111;
+  line-height: 23px;
+  background-color: #efefef;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-left: 60px;
+  overflow: hidden;
+}
+
+.floorCommentItem {
+  display: flex;
+  padding: 2px 20px;
+  position: relative;
+}
+
+.floorCommentItemContainer:nth-child(1) .floorCommentItem {
+  margin-top: 10px;
+}
+
+.floorCommentItemContainer:last-child .floorCommentItem {
+  margin-bottom: 10px;
+}
+
+.floorCommentUser,
+.repliedUser {
+  color: #4480c9;
+  cursor: pointer;
+}
+
+.replyBtn {
+  color: rgb(148, 148, 148);
+  position: absolute;
+  right: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  display: none;
+}
+
+.replyBtn div {
+  margin-left: 10px;
+}
+
+.floorCommentItem:hover .replyBtn {
+  display: flex;
+}
+
+.repliedUser {
+  color: rgb(148, 148, 148);
+}
+
+.commentTextArea /deep/ textarea {
+  resize: none;
+  height: 100px;
+  border-color: #ccc;
+  line-height: 23px;
+}
+
+.submitCommentButton {
+  margin-top: 15px;
+  text-align: right;
+}
+
+.authorName {
+  color: #4480c9;
+  font-size: 15px;
+}
+
+.publishDate {
+  font-size: 13px;
+  color: rgb(136, 136, 136);
+  margin: 4px 0;
+}
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.checkReply {
+  font-size: 14px;
+  color: #8590a6;
+  border-radius: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.checkReply:hover {
+  color: #76839b;
+}
+
+.userNickName {
+  cursor: pointer;
+}
+
+.bottom {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.el-pagination {
+  margin-bottom: 20px;
+}
+
+.commentInput {
+  margin-bottom: 20px;
 }
 </style>
