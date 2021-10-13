@@ -12,7 +12,8 @@
   "dependencies": {
     "axios": "^0.21.4",
     "element-ui": "^2.15.6",
-    "vue": "^2.5.2"
+    "vue": "^2.5.2",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -51,7 +52,6 @@
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
-
   },
   "engines": {
     "node": ">= 6.0.0",

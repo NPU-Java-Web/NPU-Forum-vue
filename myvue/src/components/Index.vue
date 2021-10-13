@@ -37,12 +37,13 @@
       </div>
 <!--      点击登录则跳转到登录页面-->
       <div>
-        <el-button v-if="ifIdNotExisted"  @click="login" class="Login">
-          <p style="color: #ffffff">登录</p>
+        <el-button v-if="ifIdNotExisted === true"  @click="login" class="Login">
+          <p style="color: #ffffff;">登录</p>
         </el-button>
-        <el-button v-else  @click="logout">
+        <el-button v-else-if="ifIdNotExisted === false"  @click="logout">
           <p style="color: #ffffff">退出</p>
         </el-button>
+        <el-button v-else></el-button>
       </div>
 
     </el-header>
@@ -160,6 +161,7 @@ export default {
         {
           this.$store.commit("saveLocalid",'')
           this.$store.commit("saveNickname",'')
+          this.ifIdNotExisted = true;
           alert("退出账号成功！")
           console.log(res)
         }
@@ -217,10 +219,11 @@ export default {
   height: 100%;
 }
 .el-button{
-  background: #20B2AA;
-  width: 80px;
+  background: #a2a254;
+  width: 100px;
   border: none;
   font-size: 15px;
+  text-align:center;
   font-family:"宋体"
 
 }
@@ -228,7 +231,9 @@ export default {
   left: 80%;
 }
 .Login{
-  float:right
+  width: 100px;
+  height: 100%;
+  text-align: match-parent;
 }
 
 /*.el-menu{*/
