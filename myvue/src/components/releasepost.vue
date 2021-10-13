@@ -84,9 +84,9 @@ if(this.$store.state.localid===''||this.$store.state.localid===null){
     },
     returnMain(){
 
-      // this.$router.push("/index");
+      this.$router.push("homepageone?typeId=1&page=1");
       //测试路由跳转
-      this.$router.push({ name: 'posts', params: { postsId: '123456' } })
+      //this.$router.push({ name: 'homepageone', params: { typeId: '1' ,page:'1'} })
     }
 
   }
