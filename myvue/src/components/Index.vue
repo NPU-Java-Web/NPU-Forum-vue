@@ -137,6 +137,7 @@ export default {
           if(result.data.id!==''&&result.data.id!==null){
             this.$store.commit("saveLocalid",result.data.id)
             this.$store.commit("saveNickname",result.data.nickName)
+            this.ifIdNotExisted = false;
            // alert("index页面的islogin执行成功")
            // alert(result.data.id)
           }
