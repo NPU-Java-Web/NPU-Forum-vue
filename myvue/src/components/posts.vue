@@ -581,7 +581,6 @@ export default {
   border-radius: 5px;
   color: #666;
   font-weight: bold;
-  // border: 1px solid #eee;
   font-size: 14px;
   letter-spacing: 1px;
   background-color: #f8f8f8;
