@@ -23,7 +23,13 @@
           <el-submenu index="2">
             <template slot="title">帖子</template>
             <el-menu-item index="releasepost">发布新帖</el-menu-item>
-            <el-menu-item index="homepageone?typeId=1&page=1">分区一</el-menu-item>
+            <el-menu-item
+              v-for="item in this.$store.state.homepageClass"
+              :key="item.typeId"
+              :index="'homepageone?typeId='+item.typeId+'&page=1'"
+            >
+            {{item.home}}
+            </el-menu-item>
             <el-menu-item index="2-3">选项3</el-menu-item>
             <el-submenu index="2-4">
               <template slot="title">选项4</template>
