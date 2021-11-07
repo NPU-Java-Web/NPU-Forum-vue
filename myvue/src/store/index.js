@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state:{
     localid:'',
     localNickname:'',
+    token:'',
     homepageClass:[
       {
         home: '分区一',
@@ -33,8 +34,16 @@ export default new Vuex.Store({
     saveNickname(state,localNickname)
     {
       this.state.localNickname=localNickname;
-    }
+    },
 
+    saveToken(state,token){
+      localStorage.token = token;
+      this.state.token=token;
+    },
+    deleteToken(state){
+      localStorage.removeItem('token');
+      this.state.token=null;
+    }
 
   }
 
