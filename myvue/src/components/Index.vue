@@ -38,7 +38,7 @@
               <el-menu-item index="2-4-3">选项3</el-menu-item>
             </el-submenu>
           </el-submenu>
-          <el-menu-item index="userProfile" >个人信息</el-menu-item>
+          <el-menu-item index="user" >个人信息</el-menu-item>
         </el-menu>
       </div>
 <!--      点击登录则跳转到登录页面-->
@@ -136,12 +136,12 @@ export default {
       self.$axios({
         method:"get",
         //url一律要再次修改
-        url:"/islogin"
+        url:"/user"
       })
         .then(result => {
           //存储用户nickname
-          if(result.data.id!==''&&result.data.id!==null){
-            this.$store.commit("saveLocalid",result.data.id)
+          if(result.token!==''&&result.token!==null){
+            this.$store.commit("saveLocalid",result.data.userId)
             this.$store.commit("saveNickname",result.data.nickName)
             this.ifIdNotExisted = false;
            // alert("index页面的islogin执行成功")
@@ -158,6 +158,10 @@ export default {
     //退出向服务器发送请求，成功则将用户在本地信息删除
     logout(){
       const self = this;
+      this.$store.commit("saveLocalid",'')
+      this.$store.commit("saveNickname",'')
+      this.$store.commit("saveToken",'')
+      this.ifIdNotExisted = true;
       self.$axios({
         method:'get',
         url:'/logout',
@@ -168,6 +172,7 @@ export default {
         {
           this.$store.commit("saveLocalid",'')
           this.$store.commit("saveNickname",'')
+          this.$store.commit("saveToken",'')
           this.ifIdNotExisted = true;
           alert("退出账号成功！")
           console.log(res)
@@ -181,7 +186,7 @@ export default {
     },
     chooseIfNotExisted(){
      // alert(this.$store.state.localid)
-      if(this.$store.state.localid===''||this.$store.state.localid===null){
+      if(this.$store.state.token===''||this.$store.state.token===null){
 
         this.ifIdNotExisted = true
       }

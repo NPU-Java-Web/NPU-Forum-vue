@@ -198,7 +198,7 @@ export default{
           method:'post',
           url: '/user/register',
           data: {
-            id: self.form.username,
+            username: self.form.username,
             //好像接口不用邮箱
           //  useremail: self.form.useremail,
             password: self.form.password
@@ -218,9 +218,9 @@ export default{
             // }
             // console.log(res)
            // alert(res.data.status)
-            if(res.data.status===200)
+            if(res.data.flag===true)
             {
-              alert("注册成功！");
+              alert(res.data.message);
               this.login();
               console.log(res)
             }
@@ -228,7 +228,7 @@ export default{
             //   this.existed = true;
             // }
             else {
-              alert("注册失败！");
+              //alert("注册失败！");
               console.log(res)
               alert(res.data.message)
             }
