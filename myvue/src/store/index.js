@@ -37,12 +37,12 @@ export default new Vuex.Store({
     },
 
     saveToken(state,token){
-      localStorage.token = token;
+      window.localStorage.setItem('token',JSON.stringify(token));
       this.state.token=token;
     },
     deleteToken(state){
-      localStorage.removeItem('token');
-      this.state.token=null;
+      window.localStorage.removeItem('token');
+      this.state.token='';
     }
 
   }

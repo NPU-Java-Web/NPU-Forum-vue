@@ -138,9 +138,8 @@ export default {
         //url一律要再次修改
         url:"/user"
       })
-        .then(result => {
-          //存储用户nickname
-          if(result.token!==''&&result.token!==null){
+        .then(result => {         //存储用户nickname
+          if(result.data.token!==''&&result.data.token!==null){
             this.$store.commit("saveLocalid",result.data.userId)
             this.$store.commit("saveNickname",result.data.nickName)
             this.ifIdNotExisted = false;
@@ -162,7 +161,8 @@ export default {
       this.$store.commit("saveNickname",'')
       this.$store.commit("saveToken",'')
       this.ifIdNotExisted = true;
-      self.$axios({
+      window.localStorage.removeItem("");
+      /*self.$axios({
         method:'get',
         url:'/logout',
 
@@ -182,12 +182,11 @@ export default {
           console.log(res)
           alert(res.data.message)
         }
-      })
+      })*/
     },
     chooseIfNotExisted(){
      // alert(this.$store.state.localid)
       if(this.$store.state.token===''||this.$store.state.token===null){
-
         this.ifIdNotExisted = true
       }
       else {

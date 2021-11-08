@@ -69,6 +69,7 @@
 
 
 <script>
+import store from "../store/index"
 export default{
   name:'login-register',
   data(){
@@ -129,13 +130,15 @@ export default{
           }
         })
           .then( res => {
-           if(res.token!==''||res.token!==null)
+           if(res.data.flag===true)
            {
              console.log(res)
               alert("登陆成功！");
               //保存静态变量id，以便后续识别是否登录
-              this.$store.commit("saveLocalid",this.form.username)
-              this.$store.commit("saveToken",res.token)
+             this.$store.commit("saveLocalid",this.form.username)
+             //this.$store.commit("saveToken",res.data.token)
+             this.$store.state.token = res.data.data.token
+             localStorage.setItem('token', res.data.data.token);
               //通过 this.$http.state.id获取localid
               //此步为跳转，应该在登录后执行，先放在这
               this.$router.push("/index")
@@ -143,7 +146,7 @@ export default{
             }
             else {
              alert("登陆失败！");
-              alert(res.data.message)
+             //alert(res.data.message);
              console.log(res)
             }
           })
@@ -158,7 +161,7 @@ export default{
       self.$axios({
         method:"get",
         //url一律要再次修改
-        url:"/islogin"
+        url:"/user"
       })
       .then(result => {
         //存储用户nickname
