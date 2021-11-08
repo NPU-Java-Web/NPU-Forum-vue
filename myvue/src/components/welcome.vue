@@ -55,7 +55,6 @@ export default {
   },
   methods:{
     islogin() {
-      //alert("执行islogin")
       const self = this
       self.$axios({
         method:"get",
@@ -75,9 +74,8 @@ export default {
             // alert(result.data)
           }
 
-          //alert(result.data.id)
         })
-    },
+    }
   }
 
 }
