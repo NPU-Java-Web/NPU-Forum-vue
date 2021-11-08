@@ -33,7 +33,11 @@ export default new Vuex.Store({
     saveLocalid(state,localid) {
       this.state.localid = localid;
     },
-
+    //
+    // saveToken(state,token){
+    //   window.localStorage.setItem('token',JSON.stringify(token));
+    //   this.state.token=token;
+    // },
     saveNickname(state,localNickname)
     {
       this.state.localNickname=localNickname;
