@@ -9,7 +9,7 @@ export default new Vuex.Store({
     localid:'',
     localNickname:'',
 
-    token:''
+    token:'',
 
     homepageClass:[
       {
@@ -35,20 +35,13 @@ export default new Vuex.Store({
       this.state.localid = localid;
     },
 
-      saveNickname(state,localNickname)
-      {
-        this.state.localNickname=localNickname;
-      },
-      saveToken(state,token){
-      this.state.token = token;
-      }
-
     saveNickname(state,localNickname)
     {
       this.state.localNickname=localNickname;
+    },
+    savetoken(state,token){
+      this.state.token = token;
     }
-
-
 
   }
 
