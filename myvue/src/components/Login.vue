@@ -10,7 +10,7 @@
           <div class="btitle">账户登录</div>
           <div class="bform">
 
-            <input type="text" placeholder="学号" v-model="form.id">
+            <input type="text" placeholder="学号" v-model="form.username">
             <span class="errTips" v-if="usernameError">* 用户名填写错误 *</span>
             <input type="password" placeholder="密码" v-model="form.password">
             <span class="errTips" v-if="passwordError">* 密码填写错误 *</span>
@@ -21,7 +21,7 @@
         <div class="big-contain" v-else>
           <div class="btitle">创建账户</div>
           <div class="bform">
-            <input type="text" placeholder="学号" v-model="form.id">
+            <input type="text" placeholder="学号" v-model="form.username">
             <span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
 <!--            <input type="email" placeholder="邮箱" v-model="form.useremail">-->
             <input type="password" placeholder="密码" v-model="form.password">
@@ -69,6 +69,7 @@
 
 
 <script>
+import store from "../store/index"
 export default{
   name:'login-register',
   data(){
@@ -82,7 +83,7 @@ export default{
       token:'',
       uid:'',
       form:{
-        id:'',
+        username:'',
         useremail:'',
         password:'',
         rememberMe:'true'
@@ -91,14 +92,14 @@ export default{
   },
   created() {
     const self = this
-    if(self.$store.state.localid !== ''&&self.$store.state.localid !== null){
+    if(self.$store.state.token !== ''&&self.$store.state.token !== null){
       alert("已登录，请确认是否重新登录")
     }
   },
   methods:{
     changeType() {
       this.isLogin = !this.isLogin
-      this.form.id = ''
+      this.form.username = ''
       this.form.useremail = ''
       this.form.password = ''
     },
@@ -107,7 +108,7 @@ export default{
     },
     login() {
       const self = this;
-      if (self.form.id === "" && self.form.password === "") {
+      if (self.form.username === "" && self.form.password === "") {
         window.alert("填写不能为空！");
         // return;
       }
@@ -126,12 +127,12 @@ export default{
           //url此处还要修改
           url: 'user/login',
           data: {
-            username: self.form.id,
+            username: self.form.username,
             password: self.form.password
           }
         })
           .then( res => {
-           if(res.status===200)
+           if(res.data.flag===true)
            {
              console.log(res)
               alert("登陆成功！");
@@ -146,7 +147,7 @@ export default{
             }
             else {
              alert("登陆失败！");
-              alert(res.data.message)
+             alert(res.data.message);
              console.log(res)
             }
           })
@@ -161,7 +162,7 @@ export default{
       self.$axios({
         method:"get",
         //url一律要再次修改
-        url:"/islogin"
+        url:"/user"
       })
       .then(result => {
         //存储用户nickname
@@ -199,12 +200,12 @@ export default{
         //alert(this.form.id)
         self.$axios({
           method:'post',
-          url: '/api/user/register',
+          url: 'user/register',
           headers:{
             'Content-Type':'application/json'
           },
           data: {
-            username: self.form.id,
+            username: self.form.username,
             //好像接口不用邮箱
           //  useremail: self.form.useremail,
             password: self.form.password
@@ -224,9 +225,9 @@ export default{
             // }
             // console.log(res)
            // alert(res.data.status)
-            if(res.status===200)
+            if(res.data.flag===true)
             {
-              alert("注册成功！");
+              alert(res.data.message);
               this.login();
               console.log(res)
             }
@@ -234,7 +235,7 @@ export default{
             //   this.existed = true;
             // }
             else {
-              alert("注册失败！");
+              //alert("注册失败！");
               console.log(res)
               alert(res.data.message)
             }
@@ -258,9 +259,9 @@ export default{
     //学号输入是否合法
     validID(){
       //！！！大坑！！！必须先判断是否有此属性，因为vue的length是取内存中的！
-      if(this.form.id)
+      if(this.form.username)
       {
-        var length1 = this.form.id.length
+        var length1 = this.form.username.length
        // alert(this.form.username)
       }
       if(length1 !==10) {
