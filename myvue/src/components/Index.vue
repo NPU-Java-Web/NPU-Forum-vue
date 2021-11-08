@@ -4,8 +4,10 @@
 <!--    //头部-->
     <el-header>
       <div>
-        <img src="../assets/NPU下载.png" alt="">
-        <span style="font-size: 20px" >NPU论坛</span>
+        <a href="/">
+        <el-image :src="require('../assets/npu-logo.png')"  style="height: 100%">
+        </el-image>
+        </a>
       </div>
       <div>
         <el-menu
@@ -21,7 +23,13 @@
           <el-submenu index="2">
             <template slot="title">帖子</template>
             <el-menu-item index="releasepost">发布新帖</el-menu-item>
-            <el-menu-item index="homepageone?typeId=1&page=1">分区一</el-menu-item>
+            <el-menu-item
+              v-for="item in this.$store.state.homepageClass"
+              :key="item.typeId"
+              :index="'homepageone?typeId='+item.typeId+'&page=1'"
+            >
+            {{item.home}}
+            </el-menu-item>
             <el-menu-item index="2-3">选项3</el-menu-item>
             <el-submenu index="2-4">
               <template slot="title">选项4</template>
@@ -34,8 +42,14 @@
         </el-menu>
       </div>
 <!--      点击登录则跳转到登录页面-->
-      <div>      <el-button type="info" @click="login" class="Login" v-if="ifIdNotExisted">登录</el-button>
-        <el-button type="info" @click="logout">退出</el-button>
+      <div>
+        <el-button v-if="ifIdNotExisted === true"  @click="login" class="Login">
+          <p style="color: #ffffff;">登录</p>
+        </el-button>
+        <el-button v-else-if="ifIdNotExisted === false"  @click="logout">
+          <p style="color: #ffffff">退出</p>
+        </el-button>
+        <el-button v-else></el-button>
       </div>
 
     </el-header>
@@ -129,6 +143,7 @@ export default {
           if(result.data.id!==''&&result.data.id!==null){
             this.$store.commit("saveLocalid",result.data.id)
             this.$store.commit("saveNickname",result.data.nickName)
+            this.ifIdNotExisted = false;
            // alert("index页面的islogin执行成功")
            // alert(result.data.id)
           }
@@ -153,6 +168,7 @@ export default {
         {
           this.$store.commit("saveLocalid",'')
           this.$store.commit("saveNickname",'')
+          this.ifIdNotExisted = true;
           alert("退出账号成功！")
           console.log(res)
         }
@@ -210,10 +226,11 @@ export default {
   height: 100%;
 }
 .el-button{
-  background-color: #102f6d;
+  background: #a2a254;
   width: 100px;
   border: none;
   font-size: 15px;
+  text-align:center;
   font-family:"宋体"
 
 }
@@ -221,7 +238,9 @@ export default {
   left: 80%;
 }
 .Login{
-  left: 10px;
+  width: 100px;
+  height: 100%;
+  text-align: match-parent;
 }
 
 /*.el-menu{*/

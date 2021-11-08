@@ -5,9 +5,16 @@
     <el-form-item label="帖子标题" prop="title">
       <el-input v-model="form.title" ></el-input>
     </el-form-item>
+    <!--进行列表渲染，数据全部存在Vuex的全局静态变量里，修改分区数只需要修改store/index.js的静态数据-->
     <el-form-item label="活动分类" prop="category">
-      <el-select v-model="form.category" placeholder="请选择分类">
-        <el-option label="分类1" value="1"></el-option>
+      <el-select  filterable v-model="form.category" placeholder="请选择分类">
+        <el-option
+          v-for="item in this.$store.state.homepageClass"
+          :key="item.home"
+          :value="item.typeId"
+          :label="item.home"
+        >
+        </el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="帖子内容" prop="content">
@@ -43,7 +50,7 @@ export default {
     }
   },
   created() {
-if(this.$store.state.localid===''||this.$store.state.localid===null){
+    if(this.$store.state.localid===''||this.$store.state.localid===null){
       alert("未登录，无法发布")
     }
   },
