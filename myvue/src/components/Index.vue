@@ -230,7 +230,7 @@ export default {
   height: 100%;
 }
 .el-button{
-  background: #a2a254;
+  background: #102f6d;
   width: 100px;
   border: none;
   font-size: 15px;

@@ -137,8 +137,8 @@ export default{
              console.log(res)
               alert("登陆成功！");
               //保存静态变量id，以便后续识别是否登录
-              this.$store.commit("saveLocalid",res.data.userId)
-             this.$store.commit("saveToken",res.data.token)
+              this.$store.commit("saveLocalid",res.data.data.userId)
+             this.$store.commit("saveToken",res.data.data.token)
               //通过 this.$http.state.id获取localid
               //此步为跳转，应该在登录后执行，先放在这
               this.$router.push("/index")
