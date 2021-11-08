@@ -9,11 +9,11 @@
   </el-radio-group>
   <div style="margin: 20px;"></div>
   <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules">
-    <el-form-item label="id">
+    <el-form-item label="uid">
       <el-input v-model="formLabelAlign.id" type="text" :disabled="true"></el-input>
     </el-form-item>
-    <el-form-item label="email">
-      <el-input v-model="formLabelAlign.email" type="text"></el-input>
+    <el-form-item label="年级">
+      <el-input v-model="formLabelAlign.gender" type="text"></el-input>
     </el-form-item>
     <el-form-item label="真实姓名" prop="name" >
       <el-input v-model="formLabelAlign.realName" type="text" placeholder="输入本人真实姓名"></el-input>
@@ -56,9 +56,9 @@
     <el-form-item label="手机号" prop="number" >
       <el-input v-model="formLabelAlign.phoneNumber" type="text" placeholder="输入11位手机号"></el-input>
     </el-form-item>
-    <el-form-item label="邮箱"  >
-      <el-input v-model="formLabelAlign.email" type="text" placeholder="输入邮箱"></el-input>
-    </el-form-item>
+<!--    <el-form-item label="邮箱"  >-->
+<!--      <el-input v-model="formLabelAlign.email" type="text" placeholder="输入邮箱"></el-input>-->
+<!--    </el-form-item>-->
     <el-form-item label="生日" required>
         <el-form-item prop="date1">
           <el-date-picker type="date" placeholder="选择日期" v-model="formLabelAlign.birthday" style="width: 100%;"></el-date-picker>
@@ -91,6 +91,7 @@ export default {
         phoneNumber:'',
         birthday:'',
         introduction:'',
+        gender:''
       },
       rules: {
         name: [
@@ -130,23 +131,24 @@ export default {
   methods: {
     getInfos() {
       const self = this;
-     // alert(this.$store.state.localid)
+     alert(this.$store.state.localid)
       if (self.$store.state.localid !== ''&&self.$store.state.localid !== null) {
         self.$axios({
           method: 'get',
-          url: '/myhome'
+          url: 'user/'+self.$store.state.localid
         })
           .then(res => {
             console.log(res)
-            self.formLabelAlign.birthday = res.data.birthday
-            self.formLabelAlign.college = res.data.college
+            self.formLabelAlign.birthday = res.data.data.birthday
+            self.formLabelAlign.college = res.data.data.college
             //id为前端静态库里面存储的，不用接受后端返回值
           //  this.formLabelAlign.id = res.data.id
-            self.formLabelAlign.email = res.data.email
-            self.formLabelAlign.introduction = res.data.introduction
-            self.formLabelAlign.nickName = res.data.nickName
-            self.formLabelAlign.phoneNumber = res.data.phoneNumber
-            self.formLabelAlign.realName = res.data.realName
+            self.formLabelAlign.email = res.data.data.email
+            self.formLabelAlign.introduction = res.data.data.introduction
+            self.formLabelAlign.nickName = res.data.data.nickname
+            self.formLabelAlign.phoneNumber = res.data.data.phone
+            self.formLabelAlign.realName = res.data.data.realName
+            self.formLabelAlign.gender = res.data.data.gender
           })
       }
       else{
@@ -164,17 +166,21 @@ export default {
           alert("请重新正确填写")
         }
         self.$axios({
-          method: 'post',
-          url: '/modify/my-information',
+          method: 'put',
+          url: '/user',
+          headers:{
+            "token":self.$store.state.token
+          },
           data: {
-           // id: self.formLabelAlign.id,
-            email:self.formLabelAlign.email,
-            realName: self.formLabelAlign.realName,
-            nickName: self.formLabelAlign.nickName,
+            userId: self.formLabelAlign.id,
+          //  email:self.formLabelAlign.email,
+           // realName: self.formLabelAlign.realName,
+            nickname: self.formLabelAlign.nickName,
             college: self.formLabelAlign.college,
-            phoneNumber: self.formLabelAlign.phoneNumber,
+            phone: self.formLabelAlign.phoneNumber,
             birthday: self.formLabelAlign.birthday,
-            introduction: self.formLabelAlign.introduction
+            introduction: self.formLabelAlign.introduction,
+            gender: self.formLabelAlign.gender
           }
         })
           .then(res => {

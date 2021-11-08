@@ -136,9 +136,11 @@ export default{
            {
              console.log(res)
               alert("登陆成功！");
+             //alert(res.data.data.userId)
               //保存静态变量id，以便后续识别是否登录
               this.$store.commit("saveLocalid",res.data.data.userId)
              this.$store.commit("saveToken",res.data.data.token)
+             //alert(self.$store.state.localid)
               //通过 this.$http.state.id获取localid
               //此步为跳转，应该在登录后执行，先放在这
               this.$router.push("/index")
@@ -166,7 +168,7 @@ export default{
       })
       .then(result => {
         //存储用户nickname
-        this.$store.commit("saveNickname",result.data.nickName)
+        this.$store.commit("saveNickname",result.data.data.nickName)
       })
     },
     register(){
@@ -229,7 +231,7 @@ export default{
             {
               alert(res.data.message);
               this.login();
-              console.log(res)
+              //console.log(res)
             }
             // else {
             //   this.existed = true;
