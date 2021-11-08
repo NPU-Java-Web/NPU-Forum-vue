@@ -136,13 +136,12 @@ export default {
       self.$axios({
         method:"get",
         //url一律要再次修改
-        url:"/islogin"
+        url:"/user"
       })
-        .then(result => {
-          //存储用户nickname
-          if(result.data.id!==''&&result.data.id!==null){
-            this.$store.commit("saveLocalid",result.data.id)
-            this.$store.commit("saveNickname",result.data.nickName)
+        .then(result => {         //存储用户nickname
+          if(result.data.data.token!==''&&result.data.data.token!==null){
+            this.$store.commit("saveLocalid",result.data.data.userId)
+            this.$store.commit("saveNickname",result.data.data.nickName)
             this.ifIdNotExisted = false;
            // alert("index页面的islogin执行成功")
            // alert(result.data.id)
@@ -158,7 +157,12 @@ export default {
     //退出向服务器发送请求，成功则将用户在本地信息删除
     logout(){
       const self = this;
-      self.$axios({
+      this.$store.commit("saveLocalid",'')
+      this.$store.commit("saveNickname",'')
+      this.$store.commit("saveToken",'')
+      this.ifIdNotExisted = true;
+      window.localStorage.removeItem("");
+      /*self.$axios({
         method:'get',
         url:'/logout',
 
@@ -177,12 +181,11 @@ export default {
           console.log(res)
           alert(res.data.message)
         }
-      })
+      })*/
     },
     chooseIfNotExisted(){
      // alert(this.$store.state.localid)
-      if(this.$store.state.localid===''||this.$store.state.localid===null){
-
+      if(this.$store.state.token===''||this.$store.state.token===null){
         this.ifIdNotExisted = true
       }
       else {
