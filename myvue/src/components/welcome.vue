@@ -8,7 +8,7 @@
     <h2>WELCOME </h2>
     <h2>FREE WORD  ||  FREE WORLD</h2>
     <div class="nav-container">
-<!--      下面的每一个链接都是整花活的地方-->
+      <!--      下面的每一个链接都是整花活的地方-->
       <a class="nav-tab" href="">GREAT</a>
       <a class="nav-tab" href="#/show01">ACTIVE</a>
       <a class="nav-tab" href="#tab-docker">FREE</a>
@@ -48,11 +48,11 @@
 <script>
 export default {
   name: "welcome",
-created() {
-   // this.$drag()
-  //alert("111")
-  this.islogin()
-},
+  created() {
+    // this.$drag()
+    //alert("111")
+    this.islogin()
+  },
   methods:{
     islogin() {
       const self = this

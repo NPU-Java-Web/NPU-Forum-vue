@@ -92,7 +92,7 @@ export default {
       const self = this;
       self.$axios({
         method:'get',
-        url:'/homepage/1/10/'+this.$route.query.page+'/1'
+        url:'/homepage/'+ this.$route.query.typeId +'/10/'+this.$route.query.page+'/1'
       })
       .then(res=>{
         if(res.data.status===200)
