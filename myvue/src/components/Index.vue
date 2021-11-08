@@ -124,15 +124,15 @@ export default {
       self.$axios({
         method:"get",
         //url一律要再次修改
-        url:"/islogin"
+        url:"user/"
       })
         .then(result => {
           //存储用户nickname
           if(result.data.id!==''&&result.data.id!==null){
-            this.$store.commit("saveLocalid",result.data.id)
-            this.$store.commit("saveNickname",result.data.nickName)
-            // alert("index页面的islogin执行成功")
-            // alert(result.data.id)
+            this.$store.commit("saveLocalid",result.data.data.userId)
+            this.$store.commit("saveNickname",result.data.data.nickname)
+            //  alert("index页面的islogin执行成功")
+             alert(result.data.userId)
           }
           else {
             // alert("index页面的islogin执行失败")
@@ -185,7 +185,8 @@ export default {
     //!!注意先调用index的created，再调用welcome的created，先父后子
     //若是刷新页面的话，这个页面的localid就没了，而且vue无论如何都先执行 this.chooseIfNotExisted()，虽然我用islogin修改localid，
     //但并不能同步刷新登录按钮，表明vue先渲染组件再执行发送信息的函数。只要用户不自动刷新页面，就没事
-    this.islogin()
+
+   // this.islogin()
 
     this.chooseIfNotExisted()
   }

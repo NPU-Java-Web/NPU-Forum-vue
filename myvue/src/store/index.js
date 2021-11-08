@@ -8,7 +8,6 @@ export default new Vuex.Store({
   state:{
     localid:'',
     localNickname:'',
-
     token:'',
 
     homepageClass:[
@@ -39,7 +38,7 @@ export default new Vuex.Store({
     {
       this.state.localNickname=localNickname;
     },
-    savetoken(state,token){
+    saveToken(state,token){
       this.state.token = token;
     }
 
