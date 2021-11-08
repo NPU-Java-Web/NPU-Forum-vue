@@ -200,7 +200,7 @@ export default {
     //!!注意先调用index的created，再调用welcome的created，先父后子
     //若是刷新页面的话，这个页面的localid就没了，而且vue无论如何都先执行 this.chooseIfNotExisted()，虽然我用islogin修改localid，
     //但并不能同步刷新登录按钮，表明vue先渲染组件再执行发送信息的函数。只要用户不自动刷新页面，就没事
-   // this.islogin()
+    this.islogin()
 
     this.chooseIfNotExisted()
   }

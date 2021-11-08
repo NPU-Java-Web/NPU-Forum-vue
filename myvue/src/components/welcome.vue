@@ -55,21 +55,29 @@ export default {
   },
   methods:{
     islogin() {
+      //alert("执行islogin")
       const self = this
       self.$axios({
         method:"get",
         //url一律要再次修改
-        url:"/islogin"
+        url:"/user"
       })
-        .then(result => {
-          //存储用户nickname
-          if(result.data.id!==''&&result.data.id!==null){
-            this.$store.commit("saveLocalid",result.data.id)
+        .then(result => {         //存储用户nickname
+          if(result.data.token!==''&&result.data.token!==null){
+            this.$store.commit("saveLocalid",result.data.userId)
             this.$store.commit("saveNickname",result.data.nickName)
+            this.ifIdNotExisted = false;
+            // alert("index页面的islogin执行成功")
+            // alert(result.data.id)
+          }
+          else {
+            // alert("index页面的islogin执行失败")
+            // alert(result.data)
           }
 
+          //alert(result.data.id)
         })
-    }
+    },
   }
 
 }
