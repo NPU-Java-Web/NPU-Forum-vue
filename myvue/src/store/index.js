@@ -7,7 +7,8 @@ export default new Vuex.Store({
   //存放静态变量
   state:{
     localid:'',
-    localNickname:''
+    localNickname:'',
+    token:''
   },
   //输入静态变量的方法
   mutations:{
@@ -17,6 +18,9 @@ export default new Vuex.Store({
       saveNickname(state,localNickname)
       {
         this.state.localNickname=localNickname;
+      },
+      saveToken(state,token){
+      this.state.token = token;
       }
 
   }

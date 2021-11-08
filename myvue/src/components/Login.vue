@@ -79,6 +79,8 @@ export default{
       existed: false,
       rePasswordError:false,
       rePassword:'',
+      token:'',
+      uid:'',
       form:{
         id:'',
         useremail:'',
@@ -122,23 +124,25 @@ export default{
         self.$axios({
           method:'post',
           //url此处还要修改
-          url: '/login',
+          url: 'user/login',
           data: {
-            id: self.form.id,
+            username: self.form.id,
             password: self.form.password
           }
         })
           .then( res => {
-           if(res.data.status===200)
+           if(res.status===200)
            {
              console.log(res)
               alert("登陆成功！");
               //保存静态变量id，以便后续识别是否登录
-              this.$store.commit("saveLocalid",this.form.id)
+              this.$store.commit("saveLocalid",res.data.userId)
+             this.$store.commit("saveToken",res.data.token)
               //通过 this.$http.state.id获取localid
               //此步为跳转，应该在登录后执行，先放在这
               this.$router.push("/index")
-             this.islogin()
+             //islogin不要了
+             // this.islogin()
             }
             else {
              alert("登陆失败！");
@@ -169,7 +173,7 @@ export default{
       //此步为跳转，应该在注册后执行，先放在这
       // this.$router.push("/index")
       if(this.validID() === false){
-        window.alert("请输入正确的学号");
+        window.alert("请输入正确的用户名");
         // return;
       }
       // else if(this.validEmail() === false){
@@ -195,9 +199,12 @@ export default{
         //alert(this.form.id)
         self.$axios({
           method:'post',
-          url: '/register',
+          url: '/api/user/register',
+          headers:{
+            'Content-Type':'application/json'
+          },
           data: {
-            id: self.form.id,
+            username: self.form.id,
             //好像接口不用邮箱
           //  useremail: self.form.useremail,
             password: self.form.password
@@ -217,7 +224,7 @@ export default{
             // }
             // console.log(res)
            // alert(res.data.status)
-            if(res.data.status===200)
+            if(res.status===200)
             {
               alert("注册成功！");
               this.login();
