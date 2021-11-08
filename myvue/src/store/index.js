@@ -8,6 +8,9 @@ export default new Vuex.Store({
   state:{
     localid:'',
     localNickname:'',
+
+    token:''
+
     homepageClass:[
       {
         home: '分区一',
@@ -23,6 +26,7 @@ export default new Vuex.Store({
       }
     ],
     homepageClassNumber:'2',
+
   },
 
   //输入静态变量的方法
@@ -30,10 +34,20 @@ export default new Vuex.Store({
     saveLocalid(state,localid) {
       this.state.localid = localid;
     },
+
+      saveNickname(state,localNickname)
+      {
+        this.state.localNickname=localNickname;
+      },
+      saveToken(state,token){
+      this.state.token = token;
+      }
+
     saveNickname(state,localNickname)
     {
       this.state.localNickname=localNickname;
     }
+
 
 
   }
