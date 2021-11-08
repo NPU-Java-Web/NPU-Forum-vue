@@ -3,9 +3,9 @@
 <div>
   <h3>用户信息</h3>
   <el-radio-group v-model="labelPosition" size="small">
-    <el-radio-button label="left">左对齐</el-radio-button>
-    <el-radio-button label="right">右对齐</el-radio-button>
-    <el-radio-button label="top">顶部对齐</el-radio-button>
+
+
+
   </el-radio-group>
   <div style="margin: 20px;"></div>
   <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules">
@@ -131,7 +131,7 @@ export default {
   methods: {
     getInfos() {
       const self = this;
-     alert(this.$store.state.localid)
+     alert(this.$store.state.token)
       if (self.$store.state.localid !== ''&&self.$store.state.localid !== null) {
         self.$axios({
           method: 'get',
