@@ -68,7 +68,7 @@ export default {
         const self = this;
         self.$axios({
           method:'post',
-          url:'/posts/new',
+          url:'/post',
           data:{
             category:self.form.category,
             title:self.form.title,
@@ -76,14 +76,15 @@ export default {
           }
         })
         .then(res=>{
-          if(res.data.status===200)
+          if(res.status===200)
           {
-            alert(res.data.message)
+           // alert(res.data.message)
             console.log(res)
             self.postsId=res.data.postsId
           }
           else {
-            alert(res.data.message)
+           // alert(res.data.message)
+            console.log(res)
           }
 
         })

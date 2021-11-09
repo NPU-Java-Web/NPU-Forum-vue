@@ -15,9 +15,9 @@
     <el-form-item label="年级">
       <el-input v-model="formLabelAlign.gender" type="text"></el-input>
     </el-form-item>
-    <el-form-item label="真实姓名" prop="name" >
-      <el-input v-model="formLabelAlign.realName" type="text" placeholder="输入本人真实姓名"></el-input>
-    </el-form-item>
+<!--    <el-form-item label="真实姓名" prop="name" >-->
+<!--      <el-input v-model="formLabelAlign.realName" type="text" placeholder="输入本人真实姓名"></el-input>-->
+<!--    </el-form-item>-->
     <el-form-item label="网名" >
       <el-input v-model="formLabelAlign.nickName" type="text" ></el-input>
     </el-form-item>

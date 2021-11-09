@@ -141,7 +141,7 @@ export default {
         .then(result => {         //存储用户nickname
           if(result.data.token!==''&&result.data.token!==null){
             this.$store.commit("saveLocalid",result.data.data.userId)
-            this.$store.commit("saveNickname",result.data.data.nickName)
+            this.$store.commit("saveNickname",result.data.data.nickname)
             this.ifIdNotExisted = false;
            // alert("index页面的islogin执行成功")
            // alert(result.data.id)
