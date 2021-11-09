@@ -2,6 +2,7 @@
 <!--用$route.params.postsId获得参数-->
 
   <div class="articleDetailContainer">
+
     <div class="articleDetail">
       <div class="left">
         <div class="card">
@@ -19,14 +20,14 @@
                   alt=""
                   lazy
                   fit="cover"
-                  @click="gotoPersonal(floorList[0].landlordId)"
+                  @click="gotoPersonal(userId)"
                 />
               </div>
               <div
                 class="authorName"
-                @click="gotoPersonal(floorList[0].landlordId)"
+                @click="gotoPersonal(userId)"
               >
-                {{ floorList[0].landlordName }}
+                {{ nickname }}
               </div>
               <div class="publishDate">
                 {{ updateTime }}
@@ -42,7 +43,7 @@
             </div>
           </div>
           <!-- 文章内容 -->
-          <div class="content detailtContent" v-html="floorList[0].floorContent"></div>
+          <div class="content detailtContent" v-html="contents"></div>
 <!--          <div class="commentControl">-->
 <!--            <div-->
 <!--              class="commentControlItem"-->
@@ -66,159 +67,159 @@
 <!--            </div>-->
 <!--          </div>-->
         </div>
-        <div class="card leftContent commentArea">
-          <!-- 评论区 -->
+                            <div class="card leftContent commentArea">
+                              <!-- 评论区 -->
 
-          <div class="commentArea">
-            <div class="commentText">
-              评论区 ({{ this.floorList.length ? this.floorList.length : 0 }})
-            </div>
-            <div class="commentInput">
-              <el-input
-                type="textarea"
-                class="commentTextArea"
-                maxlength="140"
-                show-word-limit
-                v-model="newCommentData.content"
-                placeholder="留下你的评论"
-              ></el-input>
-              <div class="submitCommentButton">
-                <el-button
-                  size="mini"
-                  round
-                  @click="submitComment"
-                  class="submitComment"
-                  type="primary"
-                >评论</el-button
-                >
-              </div>
-            </div>
-            <div
-              class="commentItem"
-              v-for="(item, index) in floorList"
-              :key="index"
-            >
-              <div class="commentItemContainer" >
-                <div class="commentItemArea">
-                  <div class="userAvatar">
-                    <!-- :src="item.commentUserAvatar" -->
-                    <img
-                      class="avatar"
-                      :src="require('../assets/defaultAvatar.jpg') "
-                      alt=""
-                    />
-                  </div>
-                  <div class="commentInfo">
-                    <div class="author userInfo">
-                      <div
-                        class="authorName userNickName"
-                        @click="gotoPersonal(item.landlordId)"
-                      >
-                        {{ item.landlordName }}
-                      </div>
-                    </div>
-                    <div class="commentContent">
-                      {{ item.floorContent }}
-                    </div>
-                    <!-- 评论控制区 -->
-                    <div class="commentContorl">
-                      <div class="publishDate commentDate">
-                        {{ item.floorTime }}
-                      </div>
-                      <div class="commentContorlArea">
-                        <div
-                          class="commentContorlItem checkReply"
-                          v-if="
-                    item.commentList.length == 0
-                  "
-                        >
-                          查看回复 {{ "(" + item.commentList.length + ")" }}
-                        </div>
-                        <div class="commentContorlItem">
-                          <i class="el-icon-check"></i>
-                        </div>
-                        <div
-                          class="commentContorlItem"
-                          @click="
-                    replyCurrentComment(
-                      item.floorId,
-                     item.landlordName,
-                     1
-                    )
-                  "
-                        >
-                          <i class="el-icon-chat-dot-round"></i>
-                        </div>
-                        <div
-                          v-if="item.landlordId == thisId"
-                          class="commentContorlItem"
-                          @click="
-                    deleteCurrentCommentFloor(item.floorId)
-                  "
-                        >
-                          <i class="el-icon-delete-solid"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<!--                 楼层评论-->
+                              <div class="commentArea">
+                                <div class="commentText">
+                                  评论区 ({{ this.floorList.length ? this.floorList.length : 0 }})
+                                </div>
+                                <div class="commentInput">
+                                  <el-input
+                                    type="textarea"
+                                    class="commentTextArea"
+                                    maxlength="140"
+                                    show-word-limit
+                                    v-model="newCommentData.content"
+                                    placeholder="留下你的评论"
+                                  ></el-input>
+                                  <div class="submitCommentButton">
+                                    <el-button
+                                      size="mini"
+                                      round
+                                      @click="submitComment"
+                                      class="submitComment"
+                                      type="primary"
+                                    >评论</el-button
+                                    >
+                                  </div>
+                                </div>
+                                <div
+                                  class="commentItem"
+                                  v-for="(item, index) in floorList"
+                                  :key="index"
+                                >
+                                  <div class="commentItemContainer" >
+                                    <div class="commentItemArea">
+                                      <div class="userAvatar">
+                                        <!-- :src="item.commentUserAvatar" -->
+                                        <img
+                                          class="avatar"
+                                          :src="require('../assets/defaultAvatar.jpg') "
+                                          alt=""
+                                        />
+                                      </div>
+                                      <div class="commentInfo">
+                                        <div class="author userInfo">
+                                          <div
+                                            class="authorName userNickName"
+                                            @click="gotoPersonal(item.floorId)"
+                                          >
+                                            {{ item.nickname }}
+                                          </div>
+                                        </div>
+                                        <div class="commentContent">
+                                          {{ item.content }}
+                                        </div>
+                                        <!-- 评论控制区 -->
+                                        <div class="commentContorl">
+                                          <div class="publishDate commentDate">
+                                            {{ item.createTime }}
+                                          </div>
+                                          <div class="commentContorlArea">
+                                            <div
+                                              class="commentContorlItem checkReply"
+                                              v-if="
+                                        item.commentList.length === 0
+                                      "
+                                            >
+                                              查看回复 {{ "(" + item.commentList.length + ")" }}
+                                            </div>
+                                            <div class="commentContorlItem">
+                                              <i class="el-icon-check"></i>
+                                            </div>
+                                            <div
+                                              class="commentContorlItem"
+                                              @click="
+                                        replyCurrentComment(
+                                          item.floorId,
+                                         item.nickname,
+                                         1
+                                        )
+                                      "
+                                            >
+                                              <i class="el-icon-chat-dot-round"></i>
+                                            </div>
+                                            <div
+                                              v-if="item.userId === thisId"
+                                              class="commentContorlItem"
+                                              @click="
+                                        deleteCurrentCommentFloor(item.floorId)
+                                      "
+                                            >
+                                              <i class="el-icon-delete-solid"></i>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                    <!--                 楼层评论-->
 
-                <div
-                  class="floorComment"
-                  v-if="item.commentList[0] && item.commentList[0].commentId"
-                >
-                  <div
-                    class="floorCommentItemContainer"
-                    v-for="(i, idx) in item.commentList"
-                    :key="idx"
-                  >
-                    <div class="floorCommentItem">
-                      <div
-                        class="floorCommentUser"
-                        @click="gotoPersonal(i.commentatorId)"
-                      >
-                        {{ i.commentatorName }}:&nbsp;
-                      </div>
-                      <div class="floorCommentContent">
-                        {{ i.commentContent }}
-                      </div>
-                      <div class="replyBtn">
-<!--                        <div-->
-<!--                          class=""-->
-<!--                          @click="-->
-<!--                    replyCurrentComment(-->
-<!--                      i.commentId,-->
-<!--                      i.commentUserNickName,-->
-<!--                      index-->
-<!--                    )-->
-<!--                  "-->
-<!--                        >-->
-<!--                          回复-->
-<!--                        </div>-->
-                        <div
-                          v-if="i.commentatorId == thisId"
-                          @click="
-                    deleteCurrentComment(i.commentId)
-                  "
-                        >
-                          删除
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                                    <div
+                                      class="floorComment"
+                                      v-if="item.commentList[0] && item.commentList[0].commentId"
+                                    >
+                                      <div
+                                        class="floorCommentItemContainer"
+                                        v-for="(i, idx) in item.commentList"
+                                        :key="idx"
+                                      >
+                                        <div class="floorCommentItem">
+                                          <div
+                                            class="floorCommentUser"
+                                            @click="gotoPersonal(i.userId)"
+                                          >
+                                            {{ i.nickname }}:&nbsp;
+                                          </div>
+                                          <div class="floorCommentContent">
+                                            {{ i.content }}
+                                          </div>
+                                          <div class="replyBtn">
+                    <!--                        <div-->
+                    <!--                          class=""-->
+                    <!--                          @click="-->
+                    <!--                    replyCurrentComment(-->
+                    <!--                      i.commentId,-->
+                    <!--                      i.commentUserNickName,-->
+                    <!--                      index-->
+                    <!--                    )-->
+                    <!--                  "-->
+                    <!--                        >-->
+                    <!--                          回复-->
+                    <!--                        </div>-->
+                                            <div
+                                              v-if="i.userId === thisId"
+                                              @click="
+                                        deleteCurrentComment(i.commentId)
+                                      "
+                                            >
+                                              删除
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
 
 
-              </div>
-            </div>
-          </div>
+                                  </div>
+                                </div>
+                              </div>
 
-        </div>
+                            </div>
       </div>
       <div class="right">
         <!-- 用户信息卡片 -->
-        <user-info-card :userId="floorList[0].landlordId"></user-info-card>
+        <user-info-card :userId="thisId"></user-info-card>
       </div>
     </div>
     <GoTop></GoTop>
@@ -244,6 +245,7 @@ export default {
         articleId: this.$route.params.postsId,
       },
 
+
       // 楼层回复时commentInput的初始长度和初始值
       floorCommentOriginData: {
         length: 0,
@@ -255,6 +257,11 @@ export default {
       thisId: this.$store.state.localid,
       //从url获得文章id
       postsId: this.$route.params.postsId,
+      title:'',
+      contents:'',
+      userId:'',
+      nickname:"",
+      likes:'',
       category: '',
       postsTitle: '',
       views: '',
@@ -265,6 +272,8 @@ export default {
       order: '',
       floorList: [],
       floorNumber: '',
+      floorId:'',
+
     }
   },
   created() {
@@ -274,26 +283,33 @@ export default {
     //初始化页面
     getposts() {
       const self = this
-      let url = '/posts/' + this.postsId + '/100/1/1'
+     // let url = '/posts/' + this.postsId + '/100/1/1'
+      //size为楼层数量
+      let url = "post/"+ this.postsId+"?size=100&page=1&order=1"
       self.$axios({
         method: 'get',
         url: url
       })
         .then(res => {
-          if (res.data.status === 200) {
-            alert(res.data.message)
-            this.floorList = res.data.floorList
-            this.postsTitle = res.data.postsTitle
-            this.category = res.data.category
-            this.views = res.data.views
+          if (res.data.flag === true) {
+          //  alert(res.data.message)
+            this.floorList = res.data.data.floorList
+            this.contents = res.data.data.content
+            this.userId = res.data.data.userId
+            this.nickname = res.data.data.nickname
+            this.likes = res.data.data.likes
+            this.postsTitle = res.data.data.title
+            this.category = res.data.data.category
+            this.views = res.data.data.views
             this.floors = res.data.floors
-            this.updateTime = res.data.updateTime
+            this.updateTime = res.data.data.updateTime
             this.eachPage = res.data.eachPage
             this.pagination = res.data.pagination
             this.order = res.data.order
             console.log(res)
           } else {
             alert(res.data.message)
+            alert(res.data.data)
             console.log(res)
           }
         })
@@ -309,23 +325,30 @@ export default {
     //发新楼层+新评论
     submitComment() {
       const self = this
+      //alert("aa")
+      alert(self.floorCommentOriginData.rootIndex)
       if(self.floorCommentOriginData.rootIndex===0){
+
         if (self.$store.state.localid !== '' && self.$store.state.localid !== null) {
+
           self.$axios({
             method: 'post',
-            url: '/floor/new',
+            url: 'post/floor',
             data: {
-              postsId: self.newCommentData.articleId,
+             postId:self.postsId,
               content: self.newCommentData.content
+             //  postId : "13",
+             //  content:"aaa"
             }
           })
             .then(res => {
-              if (res.data.status === 200) {
-                self.floorId = res.data.floorId
-                self.floorNumber = res.data.floorNumber
-                console.log(res)
-                alert(res.data.message)
-
+              console.log(res)
+              if (res.data.flag === true) {
+                //self.floorId = res.data.data.floorId
+                //self.floorNumber = res.data.data.floorNumber
+                //console.log(res)
+               // alert(res.data.message)
+             //   alert(self.floorCommentOriginData.rootIndex)
                 // 重置所有数据
                 this.newCommentData = {
                   content: "",
@@ -335,9 +358,16 @@ export default {
                 this.floorCommentOriginData = {
                   length: 0,
                   value: "",
+
+                  rootIndex:0
+
+
                 };
 
                 this.getposts()
+              }
+              else {
+                //console.log(res)
               }
 
             })
@@ -347,18 +377,20 @@ export default {
         }
       }
       else if(self.floorCommentOriginData.rootIndex===1){
+       // alert("this")
         if (self.$store.state.localid !== '' && self.$store.state.localid !== null) {
           self.$axios({
             method: 'post',
-            url: '/comment/new',
+            url: 'post/comment',
             data: {
               floorId: self.newCommentData.replyId,
               content: self.newCommentData.content
             }
           })
             .then(res => {
-              if (res.data.status === 200) {
-                console.log(res)
+              console.log(res)
+              if (res.data.flag === true) {
+               // console.log(res)
                 alert(res.data.message)
 
                 // 重置所有数据
@@ -370,6 +402,10 @@ export default {
                 this.floorCommentOriginData = {
                   length: 0,
                   value: "",
+
+                  rootIndex:0
+
+
                 };
 
                 this.getposts()
@@ -381,6 +417,9 @@ export default {
 
         }
       }
+      else{
+        alert("wrong")
+      }
 
     },
     //删除楼层
@@ -388,10 +427,10 @@ export default {
       const self = this
       self.$axios({
         method: 'delete',
-        url: '/floor/' + id
+        url: 'post/floor/' + id
       })
         .then(res => {
-          if (res.data.status === 200) {
+          if (res.data.flag === true) {
             alert("删除楼层成功")
             console.log(res)
             this.getposts()
@@ -406,10 +445,10 @@ export default {
       const self = this
       self.$axios({
         method: 'delete',
-        url: '/comment/' + id
+        url: 'post/comment/' + id
       })
         .then(res => {
-          if (res.data.status === 200) {
+          if (res.data.flag=== true) {
             alert("删除评论成功")
             console.log(res)
             this.getposts()

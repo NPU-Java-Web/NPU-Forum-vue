@@ -184,7 +184,7 @@ export default {
           }
         })
           .then(res => {
-            if(res.data.status===200)
+            if(res.data.flag===true)
             {
               console.log(res)
               alert(res.data.message)

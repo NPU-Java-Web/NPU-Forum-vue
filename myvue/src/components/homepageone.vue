@@ -100,13 +100,13 @@ export default {
       self.$axios({
         method:'get',
         //url:"/post/posts?keyword=&userId&category=1&size=5&page=1&order=1"
-         url:'/post/posts?keyword=&userId&category='+this.$route.query.typeId +'&size=5&page='+this.$route.query.page+'&order=1'
+         url:'/post/posts?keyword=&userId&category='+this.$route.query.typeId +'&size=15&page='+this.$route.query.page+'&order=1'
       })
 
         .then(res=>{
         if(res.data.flag===true)
         {
-          alert(res.data.message)
+         // alert(res.data.message)
           this.postsList=res.data.data.records
           this.total=res.data.data.total
           //this.category=res.data.category
