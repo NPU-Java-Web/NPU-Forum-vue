@@ -12,6 +12,7 @@ import releasepost from "../components/releasepost";
 import homepageone from "../components/homepageone";
 import posts from "../components/posts";
 import personal from "../components/personal";
+import userProfile from "../components/userProfile";
 Vue.use(Router);
 
 
@@ -67,6 +68,11 @@ export default new Router({
           name:'personal',
           path:'/personal/:id',
           component:personal
+        },
+        {
+          name:'userProfile',
+          path:'/userprofile',
+          component:userProfile
         }
       ]
     },
