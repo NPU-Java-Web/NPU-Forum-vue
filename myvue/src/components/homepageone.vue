@@ -7,7 +7,7 @@
         v-for="(item, index) in postsList"
         :key="index"
         @click="
-              $router.push({ name: 'posts', params: { postsId: item.postsId } })
+              $router.push({ name: 'posts', params: { postsId: item.postId } })
             "
       >
         <div class="userAvatar">
@@ -21,13 +21,13 @@
           />
         </div>
         <div class="ItemCenter">
-          <div class="title">{{ item.conciseTitle }}</div>
+          <div class="title">{{ item.title }}</div>
           <div class="publishDate">
             {{ item.updateTime}}
           </div>
           <div
             class="content mdContent"
-            v-html="item.conciseContent"
+            v-html="item.content"
           ></div>
           <div class="articleImg">
             <img
@@ -46,7 +46,7 @@
           </div>
           <div>
             <i class="el-icon-user"></i>
-            {{item.landlordName}}
+            {{item.nickname}}
           </div>
         </div>
       </div>
@@ -81,7 +81,8 @@ export default {
         category:'',
         eachPage:'',
         pagination:'',
-        order:''
+        order:'',
+        total:''
     }
   },
   created() {
@@ -92,17 +93,18 @@ export default {
       const self = this;
       self.$axios({
         method:'get',
-        url:'/homepage/'+ this.$route.query.typeId +'/10/'+this.$route.query.page+'/1'
+        url:'/post/posts?'+ 'category='+this.$route.query.typeId +'&size=10&page='+this.$route.query.page+'&order=1'
       })
       .then(res=>{
-        if(res.data.status===200)
+        if(res.data.flag===true)
         {
           alert(res.data.message)
-          this.postsList=res.data.postsList
-          this.category=res.data. category
-          this.eachPage = res.data.eachPage
-          this.pagination = res.data.pagination
-          this.order = res.data.order
+          this.postsList=res.data.data.records
+          this.total=res.data.data.total
+          //this.category=res.data.category
+          //this.eachPage = res.data.eachPage
+          //this.pagination = res.data.pagination
+          //this.order = res.data.order
           console.log(res)
           window.scrollTo({
             top: 0,
@@ -121,7 +123,7 @@ export default {
       // this.currentPage = e;
       this.$router.push({
         name: "homepageone",
-        query: { typeId: this.$route.query.typeId, page: e },
+        query: { category: this.$route.query.typeId, page: e },
       });
       this.getInfos()
       // if (this.$route.query.typeId == 0) {
