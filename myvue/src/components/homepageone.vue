@@ -82,20 +82,28 @@ export default {
         eachPage:'',
         pagination:'',
         order:'',
-        total:''
+        total:'',
+        //catelogy:" this.$route.query.typeId"
     }
   },
   created() {
     this.getInfos()
   },
   methods:{
+
     getInfos() {
       const self = this;
+      //alert(this.$route.query.typeId);
+     // alert(catelogy);
+     // alert(this.$route.query.page);
+      //var catelogy = this.$route.query.typeId;
       self.$axios({
         method:'get',
-        url:'/post/posts?'+ 'category='+this.$route.query.typeId +'&size=10&page='+this.$route.query.page+'&order=1'
+        //url:"/post/posts?keyword=&userId&category=1&size=5&page=1&order=1"
+         url:'/post/posts?keyword=&userId&category='+this.$route.query.typeId +'&size=5&page='+this.$route.query.page+'&order=1'
       })
-      .then(res=>{
+
+        .then(res=>{
         if(res.data.flag===true)
         {
           alert(res.data.message)
@@ -123,7 +131,7 @@ export default {
       // this.currentPage = e;
       this.$router.push({
         name: "homepageone",
-        query: { category: this.$route.query.typeId, page: e },
+        query: { typeId: this.$route.query.typeId, page: e },
       });
       this.getInfos()
       // if (this.$route.query.typeId == 0) {
