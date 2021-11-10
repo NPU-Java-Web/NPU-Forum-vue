@@ -19,23 +19,26 @@
           text-color="#fff"
           active-text-color="#ffd04b"
         :router="true">
+
           <el-menu-item index="welcome">首页</el-menu-item>
           <el-submenu index="2">
             <template slot="title">帖子</template>
-            <el-menu-item index="releasepost">发布新帖</el-menu-item>
+            <el-menu-item index="/releasepost">发布新帖</el-menu-item>
             <el-menu-item
               v-for="item in this.$store.state.homepageClass"
               :key="item.typeId"
-              :index="'homepageone?typeId='+item.typeId+'&page=1'"
+              @click="chooseItem(item.typeId)"
+
             >
             {{item.home}}
+              <!--              :index="'homepageone?typeId='+item.typeId+'&page=1'"-->
             </el-menu-item>
-            <el-menu-item index="2-3">选项3</el-menu-item>
+            <el-menu-item index="/2-3">选项3</el-menu-item>
             <el-submenu index="2-4">
               <template slot="title">选项4</template>
-              <el-menu-item index="2-4-1">选项1</el-menu-item>
-              <el-menu-item index="2-4-2">选项2</el-menu-item>
-              <el-menu-item index="2-4-3">选项3</el-menu-item>
+                <el-menu-item >选项1</el-menu-item>
+                <el-menu-item index="/2-4-2">选项2</el-menu-item>
+                <el-menu-item index="/2-4-3">选项3</el-menu-item>
             </el-submenu>
           </el-submenu>
           <el-menu-item index="user" >个人信息</el-menu-item>
@@ -100,9 +103,14 @@
 <!--        </el-col></el-aside>-->
 <!--      //主页面-->
       <el-main>
+        <!--    调用LoadingIcon预加载-->
+
 <!--        路由占位符-->
 <!--        渲染主页面-->
-        <router-view></router-view>
+
+        <LoadingIcon v-if="loading"></LoadingIcon>
+        <router-view v-else></router-view>
+
       </el-main>
 
     </el-container>
@@ -114,23 +122,42 @@
 <script>
 import GoTop from "./GoTop";
 import welcome from "./welcome";
+import LoadingIcon from "./LoadingIcon";
 export default {
   data(){
     return{
-      ifIdNotExisted:false
+      ifIdNotExisted:false,
+      loading: true
     }
 
   },
   components:{
-    GoTop
+    GoTop,
+    LoadingIcon
   },
   name: "Home",
   methods:{
     login() {
     this.$router.push('/login')
     },
+    chooseItem(id){
+      this.$router.push('/homepageone?typeId='+id+'&page=1');
+      setTimeout(function () {
+        window.location.reload();
+      }, 100);
+    },
     //每次刷新页面时就调用islogin，服务器便发送用户id
     islogin() {
+     // alert(this.loading)
+     //  var start = new Date().getTime();
+     //  //  console.log('休眠前：' + start);
+     //  while (true) {
+     //    if (new Date().getTime() - start > 20000) {
+     //      break;
+     //    }
+     //  }
+
+
       //alert("执行islogin")
       const self = this
       self.$axios({
@@ -139,16 +166,21 @@ export default {
         url:"/user"
       })
         .then(result => {         //存储用户nickname
-          if(result.data.token!==''&&result.data.token!==null){
+          if(result.data.flag===true){
+
+            this.loading = false
+
             this.$store.commit("saveLocalid",result.data.data.userId)
             this.$store.commit("saveNickname",result.data.data.nickname)
             this.ifIdNotExisted = false;
-           // alert("index页面的islogin执行成功")
+            console.log(result)
+          // alert("index页面的islogin执行成功")
            // alert(result.data.id)
           }
           else {
            // alert("index页面的islogin执行失败")
            // alert(result.data)
+            alert(result.data.message)
           }
 
           //alert(result.data.id)
@@ -200,6 +232,10 @@ export default {
     //!!注意先调用index的created，再调用welcome的created，先父后子
     //若是刷新页面的话，这个页面的localid就没了，而且vue无论如何都先执行 this.chooseIfNotExisted()，虽然我用islogin修改localid，
     //但并不能同步刷新登录按钮，表明vue先渲染组件再执行发送信息的函数。只要用户不自动刷新页面，就没事
+
+
+   // setTimeout(this.loading===false, 300 )
+
    this.islogin()
 
     this.chooseIfNotExisted()

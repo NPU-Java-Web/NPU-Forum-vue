@@ -93,6 +93,8 @@ export default {
 
     getInfos() {
       const self = this;
+     // location.reload();
+
       //alert(this.$route.query.typeId);
      // alert(catelogy);
      // alert(this.$route.query.page);

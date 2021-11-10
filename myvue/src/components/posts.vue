@@ -326,10 +326,11 @@ export default {
     submitComment() {
       const self = this
       //alert("aa")
-      alert(self.floorCommentOriginData.rootIndex)
+
+      //alert(self.floorCommentOriginData.rootIndex)
       if(self.floorCommentOriginData.rootIndex===0){
 
-        if (self.$store.state.localid !== '' && self.$store.state.localid !== null) {
+        if (self.$store.state.localid !== '' && self.$store.state.localid !== undefined) {
 
           self.$axios({
             method: 'post',
@@ -378,7 +379,7 @@ export default {
       }
       else if(self.floorCommentOriginData.rootIndex===1){
        // alert("this")
-        if (self.$store.state.localid !== '' && self.$store.state.localid !== null) {
+        if (self.$store.state.localid !== '' && self.$store.state.localid !== undefined) {
           self.$axios({
             method: 'post',
             url: 'post/comment',
@@ -391,7 +392,7 @@ export default {
               console.log(res)
               if (res.data.flag === true) {
                // console.log(res)
-                alert(res.data.message)
+              //  alert(res.data.message)
 
                 // 重置所有数据
                 this.newCommentData = {

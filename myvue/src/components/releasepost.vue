@@ -50,8 +50,10 @@ export default {
     }
   },
   created() {
-    if(this.$store.state.localid===''||this.$store.state.localid===null){
+
+    if(this.$store.state.localid===''||this.$store.state.localid===undefined){
       alert("未登录，无法发布")
+      this.$router.push('/login')
     }
   },
   methods: {
@@ -61,7 +63,7 @@ export default {
       {
         alert("有未填写项，无法发布")
       }
-      else if(this.$store.state.localid===''||this.$store.state.localid===null){
+      else if(this.$store.state.localid===''||this.$store.state.localid===undefined){
         alert("未登录，无法发布")
       }
       else {
@@ -76,14 +78,15 @@ export default {
           }
         })
         .then(res=>{
-          if(res.status===200)
+          if(res.data.data.flag===true)
           {
-           // alert(res.data.message)
+           alert(res.data.message)
             console.log(res)
             self.postsId=res.data.postsId
           }
           else {
            // alert(res.data.message)
+            alert(res.data.message)
             console.log(res)
           }
 
