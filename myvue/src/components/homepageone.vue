@@ -91,6 +91,9 @@ export default {
   },
   methods:{
 
+
+
+
     getInfos() {
       const self = this;
      // location.reload();

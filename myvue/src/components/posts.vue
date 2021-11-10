@@ -44,6 +44,12 @@
           </div>
           <!-- 文章内容 -->
           <div class="content detailtContent" v-html="contents"></div>
+          <el-button type="primary" icon="el-icon-star-off" v-if="postLikedFlag === false" @click="likePost">
+            {{this.likes}} likes
+          </el-button>
+          <el-button type="primary" icon="el-icon-star-on" v-else @click="unlikePost">
+            {{this.likes}} likes
+          </el-button>
 <!--          <div class="commentControl">-->
 <!--            <div-->
 <!--              class="commentControlItem"-->
@@ -135,6 +141,13 @@
                                             >
                                               查看回复 {{ "(" + item.commentList.length + ")" }}
                                             </div>
+                                            <div class="commentContorlItem" @click="unlikeFloor(item.floorId,index)" v-if="this.floorLikeFlag===true">
+                                              <i class="el-icon-star-on"> {{item.likes}}</i>
+                                            </div>
+                                            <div class="commentContorlItem" @click="likeFloor(item.floorId,index)" v-else>
+                                              <i class="el-icon-star-on"> {{item.likes}}</i>
+                                            </div>
+
                                             <div class="commentContorlItem">
                                               <i class="el-icon-check"></i>
                                             </div>
@@ -245,6 +258,7 @@ export default {
         articleId: this.$route.params.postsId,
       },
 
+      postLikedFlag:false,
 
       // 楼层回复时commentInput的初始长度和初始值
       floorCommentOriginData: {
@@ -271,6 +285,7 @@ export default {
       pagination: '',
       order: '',
       floorList: [],
+      floorLikeFlag:[],
       floorNumber: '',
       floorId:'',
 
@@ -306,6 +321,7 @@ export default {
             this.eachPage = res.data.eachPage
             this.pagination = res.data.pagination
             this.order = res.data.order
+            this.postsId = res.data.data.postId
             console.log(res)
           } else {
             alert(res.data.message)
@@ -315,6 +331,93 @@ export default {
         })
 
     },
+    //给贴子点赞
+    likePost(){
+      this.$axios({
+        method:'post',
+        //url此处还要修改
+        url: 'post/like/'+this.postsId
+        //params: {  //body参数
+          //postId:this.postsId,
+        //},
+      })
+        .then( res => {
+          if(res.data.flag===true)
+          {
+            this.postLikedFlag===true;
+          }
+          else {
+          }
+        })
+        .catch( err => {
+          console.log(err);
+        })
+    },
+    //给贴子取消点赞
+    unlikePost(){
+      this.$axios({
+        method:'delete',
+        //url此处还要修改
+        url: 'post/like/'+this.postsId
+        //params: {  //body参数
+          //postId:this.postsId
+        //},
+        //data: {
+        //}
+      })
+        .then( res => {
+          if(res.data.flag===true)
+          {
+            this.postLikedFlag===false;
+          }
+          else {
+          }
+        })
+        .catch( err => {
+          console.log(err);
+        })
+    },
+
+    unlikeFloor(floorId){
+      this.$axios({
+        method:'delete',
+        //url此处还要修改
+        url: 'post/floor/like/'+this.floorId
+      })
+        .then( res => {
+          if(res.data.flag===true)
+          {
+            this.floorLikeFlag[index]=false;
+          }
+          else {
+            this.floorLikeFlag[index]=true;
+          }
+        })
+        .catch( err => {
+          console.log(err);
+        })
+    },
+    likeFloor(floorId,index){
+      this.$axios({
+        method:'post',
+        //url此处还要修改
+        url: 'post/floor/like/'+this.floorId
+      })
+        .then( res => {
+          if(res.data.flag===true)
+          {
+            this.floorLikeFlag[index]=true;
+          }
+          else {
+            this.floorLikeFlag[index]=false;
+          }
+        })
+        .catch( err => {
+          console.log(err);
+        })
+    },
+
+
     //跳转到个人页面
     gotoPersonal(id) {
       this.$router.push({
