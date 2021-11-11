@@ -522,6 +522,23 @@ export default {
             alert(res.data.message)
           }
         })
+    },
+    dislikeCurrentArticle(){
+      const self = this
+      self.$axios({
+        method: 'delete',
+        url: 'post/like/' + this.postsId
+      })
+        .then(res => {
+          if (res.data.flag === true) {
+
+            console.log(res)
+
+          } else {
+            console.log(res)
+            alert(res.data.message)
+          }
+        })
     }
 
 
