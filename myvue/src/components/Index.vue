@@ -20,7 +20,7 @@
           active-text-color="#ffd04b"
         :router="true">
 
-          <el-menu-item index="welcome">首页</el-menu-item>
+          <el-menu-item index="/welcome">首页</el-menu-item>
           <el-submenu index="2">
             <template slot="title">帖子</template>
             <el-menu-item index="/releasepost">发布新帖</el-menu-item>
