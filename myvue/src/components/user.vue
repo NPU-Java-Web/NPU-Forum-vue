@@ -74,6 +74,7 @@
       </el-form-item>
     </el-form>
     <el-button type="primary" @click="onSubmit">立即创建</el-button>
+    <el-button type="primary" @click="checkUserProfile">查看信息</el-button>
   </div>
 </template>
 
@@ -131,7 +132,6 @@ export default {
   methods: {
     getInfos() {
       const self = this;
-      alert(this.$store.state.token)
       if (self.$store.state.localid !== ''&&self.$store.state.localid !== null) {
         self.$axios({
           method: 'get',
@@ -198,9 +198,12 @@ export default {
             alert(err);
           })
       }
-
-
     },
+
+    checkUserProfile(){
+      this.$router.push("userProfile")
+    },
+
     //验证手机号
     vaildPhonenumber(){
       if(this.formLabelAlign.phoneNumber!=null)

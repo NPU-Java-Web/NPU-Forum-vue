@@ -11,12 +11,12 @@
           </div>
           <div style="margin-top:5px;margin-left:6px;"><span>{{formLabelAlign.realName}}</span></div>
           <div style="margin-top:50px;margin-left:1px;"><el-button type="text" style="font-size:15px;color:#4D4D4D;"  @click="infomationClick()">个人信息<span style="color:#B0E0E6;" v-show="infomationShow" class="el-icon-s-promotion"></span></el-button></div>
-          <div style="margin-top:5px;margin-left:1px;"><el-button type="text" style="font-size:15px;color:#4D4D4D;" @click="passwordClick()">修改密码<span style="color:#B0E0E6;" v-show="passwordShow" class="el-icon-s-promotion"></span></el-button></div>
+          <div style="margin-top:5px;margin-left:1px;"><el-button @click="resetUserProfile()">修改信息<span style="color:#B0E0E6;" class="el-icon-s-promotion"></span></el-button></div>
         </el-col>
 
         <el-col :span="21">
           <el-row :gutter="10" style="margin-top:20px;">
-            <el-col :span="2"><div style="text-align:right;"><span>账号：</span></div></el-col>
+            <el-col :span="2"><div style="text-align:right;"><span>ID：</span></div></el-col>
             <el-col :span="5">{{formLabelAlign.id}}</el-col>
           </el-row>
           <!-- 个人信息 -->
@@ -25,8 +25,8 @@
               <el-row>
                 <el-col :span="6">
                   <el-row :gutter="12" style="margin-top:20px;">
-                    <el-col :span="8"><div style="text-align:right;"><span>姓名：</span></div></el-col>
-                    <el-col :span="16">{{formLabelAlign.realName}}</el-col>
+                    <el-col :span="8"><div style="text-align:right;"><span>用户名：</span></div></el-col>
+                    <el-col :span="16">{{formLabelAlign.nickName}}</el-col>
                   </el-row>
                   <el-row :gutter="12" style="margin-top:30px;">
                     <el-col :span="8"><div style="text-align:right;"><span>手机号：</span></div></el-col>
@@ -37,14 +37,8 @@
                     <el-col :span="16">{{formLabelAlign.email}}</el-col>
                   </el-row>
                   <el-row :gutter="12" style="margin-top:30px;">
-                    <el-col :span="8"><div style="text-align:right;"><span>昵称：</span></div></el-col>
-                    <el-col :span="16">{{formLabelAlign.nickName}}</el-col>
-                  </el-row>
-                  <el-row :gutter="12" style="margin-top:30px;">
                     <el-col :span="8"><div style="text-align:right;"><span>生日：</span></div></el-col>
-                    <el-form-item prop="date1">
-                      <el-date-picker type="date" placeholder="选择日期" v-model="formLabelAlign.birthday" style="width: 100%;"></el-date-picker>
-                    </el-form-item>
+                    <el-col :span="16">{{formLabelAlign.birthday}}</el-col>
                   </el-row>
                   <el-row :gutter="12" style="margin-top:30px;">
                     <el-col :span="8"><div style="text-align:right;"><span>介绍：</span></div></el-col>
@@ -140,7 +134,7 @@ export default {
       src:npulogo,
       levelName:'',
       isCollapse:false,
-      infomationShow:false,
+      infomationShow:true,
       passwordShow:false,
       buttonName:"发送短信",
       isDisabled:false,
@@ -272,23 +266,24 @@ export default {
 
     getInfos() {
       const self = this;
-      // alert(this.$store.state.localid)
       if (self.$store.state.localid !== ''&&self.$store.state.localid !== null) {
         self.$axios({
           method: 'get',
-          url: '/myhome'
+          url: 'user/'+self.$store.state.localid
         })
           .then(res => {
             console.log(res)
-            self.formLabelAlign.birthday = res.data.birthday
-            self.formLabelAlign.college = res.data.college
+            self.formLabelAlign.birthday = res.data.data.birthday
+            self.formLabelAlign.college = res.data.data.college
             //id为前端静态库里面存储的，不用接受后端返回值
-            //  this.formLabelAlign.id = res.data.id
-            self.formLabelAlign.email = res.data.email
-            self.formLabelAlign.introduction = res.data.introduction
-            self.formLabelAlign.nickName = res.data.nickName
-            self.formLabelAlign.phoneNumber = res.data.phoneNumber
-            self.formLabelAlign.realName = res.data.realName
+            self.formLabelAlign.id = res.data.data.userId
+            self.formLabelAlign.email = res.data.data.email
+            self.formLabelAlign.introduction = res.data.data.introduction
+            self.formLabelAlign.nickName = res.data.data.nickname
+            self.formLabelAlign.phoneNumber = res.data.data.phone
+            self.formLabelAlign.realName = res.data.data.realName
+            self.formLabelAlign.gender = res.data.data.gender
+
           })
       }
       else{
@@ -296,8 +291,11 @@ export default {
         this.$router.push("/index")
 
       }
-    }
-    ,
+    },
+    resetUserProfile(){
+      this.$router.push("user")
+    },
+
     onSubmit() {
       const self = this;
       if (this.$store.state.localid !== '') {
