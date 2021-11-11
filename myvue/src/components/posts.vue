@@ -50,7 +50,7 @@
               @click="likeCurrentArticle(!isUserLike)"
             >
               <i class="iconfont icon-dianzan"></i>
-              {{ (isUserLike ? "已点赞" : "点赞") + "  " + this.likes }}
+              {{ (likes ? "已点赞" : "点赞") + "  " + this.likes }}
             </div>
             <div class="likeUsersAvatar">
 <!--              <img-->
@@ -132,8 +132,16 @@
                                         item.commentList.length === 0
                                       "
                                             >
-                                              查看回复 {{ "(" + item.commentList.length + ")" }}
+
                                             </div>
+
+                                            <div class="commentContorlItem" @click="unlikeFloor(item.floorId,index)" v-if=item.likes>
+                                              <i class="el-icon-star-on"> {{item.likes}}</i>
+                                            </div>
+                                            <div class="commentContorlItem" @click="likeFloor(item.floorId,index)" v-else>
+                                              <i class="el-icon-star-on"> {{item.likes}}</i>
+                                            </div>
+
                                             <div class="commentContorlItem">
                                               <i class="el-icon-check"></i>
                                             </div>
@@ -243,7 +251,7 @@ export default {
         replyId: 0,
         articleId: this.$route.params.postsId,
       },
-
+      postLikedFlag:0,
 
       // 楼层回复时commentInput的初始长度和初始值
       floorCommentOriginData: {
@@ -270,6 +278,7 @@ export default {
       pagination: '',
       order: '',
       floorList: [],
+      floorLikeFlag:[],
       floorNumber: '',
       floorId:'',
 
@@ -307,6 +316,13 @@ export default {
             this.pagination = res.data.pagination
             this.order = res.data.order
             console.log(res)
+            if( this.likes===0){
+              this.postLikedFlag =true
+            }
+          else {
+              this.postLikedFlag =true
+            }
+
           } else {
             alert(res.data.message)
             alert(res.data.data)
@@ -539,7 +555,45 @@ export default {
             alert(res.data.message)
           }
         })
-    }
+    },
+    unlikeFloor(floorId){
+      this.$axios({
+        method:'delete',
+        //url此处还要修改
+        url: 'post/floor/like/'+this.floorId
+      })
+        .then( res => {
+          if(res.data.flag===true)
+          {
+            this.floorLikeFlag[index]=false;
+          }
+          else {
+            this.floorLikeFlag[index]=true;
+          }
+        })
+        .catch( err => {
+          console.log(err);
+        })
+    },
+    likeFloor(floorId,index){
+      this.$axios({
+        method:'post',
+        //url此处还要修改
+        url: 'post/floor/like/'+this.floorId
+      })
+        .then( res => {
+          if(res.data.flag===true)
+          {
+            this.floorLikeFlag[index]=true;
+          }
+          else {
+            this.floorLikeFlag[index]=false;
+          }
+        })
+        .catch( err => {
+          console.log(err);
+        })
+    },
 
 
   }
