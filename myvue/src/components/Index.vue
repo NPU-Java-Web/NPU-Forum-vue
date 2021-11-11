@@ -33,13 +33,13 @@
             {{item.home}}
               <!--              :index="'homepageone?typeId='+item.typeId+'&page=1'"-->
             </el-menu-item>
-            <el-menu-item index="/2-3">选项3</el-menu-item>
-            <el-submenu index="2-4">
-              <template slot="title">选项4</template>
-                <el-menu-item >选项1</el-menu-item>
-                <el-menu-item index="/2-4-2">选项2</el-menu-item>
-                <el-menu-item index="/2-4-3">选项3</el-menu-item>
-            </el-submenu>
+<!--            <el-menu-item index="/2-3">选项3</el-menu-item>-->
+<!--            <el-submenu index="2-4">-->
+<!--              <template slot="title">选项4</template>-->
+<!--                <el-menu-item >选项1</el-menu-item>-->
+<!--                <el-menu-item index="/2-4-2">选项2</el-menu-item>-->
+<!--                <el-menu-item index="/2-4-3">选项3</el-menu-item>-->
+<!--            </el-submenu>-->
           </el-submenu>
           <el-menu-item index="user" >个人信息</el-menu-item>
         </el-menu>

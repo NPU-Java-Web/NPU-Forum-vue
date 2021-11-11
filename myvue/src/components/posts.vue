@@ -31,41 +31,40 @@
               </div>
               <div class="publishDate">
                 {{ updateTime }}
-<!--                <div-->
-<!--                  class="updatearticle"-->
-<!--                  v-if="articleData.authorId == $store.state.userInfo.userId"-->
-<!--                >-->
-<!--                  <div @click="isWriteCardShow = true">更新文章</div>-->
-<!--                  <div class="fenge">|</div>-->
-<!--                  <div @click="deleteCurrentArticle">删除文章</div>-->
-<!--                </div>-->
+                <div
+                  class="updatearticle"
+                  v-if="this.userId === this.thisId"
+                >
+                  <div class="fenge">|</div>
+                  <div @click="deleteCurrentArticle">删除文章</div>
+                </div>
               </div>
             </div>
           </div>
           <!-- 文章内容 -->
           <div class="content detailtContent" v-html="contents"></div>
-<!--          <div class="commentControl">-->
-<!--            <div-->
-<!--              class="commentControlItem"-->
-<!--              :class="isUserLike ? 'controlItemDone' : ''"-->
-<!--              @click="likeCurrentArticle(!isUserLike)"-->
-<!--            >-->
-<!--              <i class="iconfont icon-dianzan"></i>-->
-<!--              {{ (isUserLike ? "已点赞" : "点赞") + "  " + this.likeCount }}-->
-<!--            </div>-->
-<!--            <div class="likeUsersAvatar">-->
+          <div class="commentControl">
+            <div
+              class="commentControlItem"
+              :class="isUserLike ? 'controlItemDone' : ''"
+              @click="likeCurrentArticle(!isUserLike)"
+            >
+              <i class="iconfont icon-dianzan"></i>
+              {{ (isUserLike ? "已点赞" : "点赞") + "  " + this.likes }}
+            </div>
+            <div class="likeUsersAvatar">
 <!--              <img-->
 <!--                v-for="(item, index) in likeUserList"-->
 <!--                :key="index"-->
 <!--                :src="-->
 <!--                  item.avatar && item.avatar != ''-->
 <!--                    ? item.avatar-->
-<!--                    : require('assets/img/defaultAvatar.jpg')-->
+<!--                    : require('../assets/3.jpg')-->
 <!--                "-->
 <!--                fit="cover"-->
 <!--              />-->
-<!--            </div>-->
-<!--          </div>-->
+            </div>
+          </div>
         </div>
                             <div class="card leftContent commentArea">
                               <!-- 评论区 -->
@@ -282,6 +281,7 @@ export default {
   methods: {
     //初始化页面
     getposts() {
+
       const self = this
      // let url = '/posts/' + this.postsId + '/100/1/1'
       //size为楼层数量
@@ -488,6 +488,40 @@ export default {
       let input = document.querySelector(".commentTextArea");
       // 阻止focus定位
       input.children[0].focus({ preventScroll: true });
+    },
+    deleteCurrentArticle(){
+      const self = this
+      self.$axios({
+        method: 'delete',
+        url: 'post/' + this.postsId
+      })
+        .then(res => {
+          if (res.data.flag === true) {
+            alert("删除帖子成功")
+            console.log(res)
+            this.$router.push('/homepageone?typeId='+"1"+'&page=1');
+          } else {
+            console.log(res)
+            alert(res.data.message)
+          }
+        })
+    },
+    likeCurrentArticle(){
+      const self = this
+      self.$axios({
+        method: 'post',
+        url: 'post/like/' + this.postsId
+      })
+        .then(res => {
+          if (res.data.flag === true) {
+
+            console.log(res)
+
+          } else {
+            console.log(res)
+            alert(res.data.message)
+          }
+        })
     }
 
 
