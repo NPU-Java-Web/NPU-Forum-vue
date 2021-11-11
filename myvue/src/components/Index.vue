@@ -127,7 +127,7 @@ export default {
   data(){
     return{
       ifIdNotExisted:false,
-      loading: true
+      loading: false
     }
 
   },
@@ -180,7 +180,7 @@ export default {
           else {
            // alert("index页面的islogin执行失败")
            // alert(result.data)
-            alert(result.data.message)
+            //alert(result.data.message)
           }
 
           //alert(result.data.id)
