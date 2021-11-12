@@ -41,7 +41,7 @@
 <!--                <el-menu-item index="/2-4-3">选项3</el-menu-item>-->
 <!--            </el-submenu>-->
           </el-submenu>
-          <el-menu-item index="user" >个人信息</el-menu-item>
+          <el-menu-item index="userProfile" >个人信息</el-menu-item>
         </el-menu>
       </div>
 <!--      点击登录则跳转到登录页面-->
@@ -127,7 +127,7 @@ export default {
   data(){
     return{
       ifIdNotExisted:false,
-      loading: true
+      loading: false
     }
 
   },
@@ -180,7 +180,7 @@ export default {
           else {
            // alert("index页面的islogin执行失败")
            // alert(result.data)
-            alert(result.data.message)
+            //alert(result.data.message)
           }
 
           //alert(result.data.id)
