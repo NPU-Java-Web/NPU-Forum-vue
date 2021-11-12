@@ -1,9 +1,13 @@
 <template>
 <div>
   <div class="wrapper">
-    <div class="typing-demo">
+    <div class="typing-demo" onclick="window.open('http://47.98.132.166:8080/')">
       This is NPU-forum.
     </div>
+    <div class="typing-demo2" onclick="window.open('http://123.56.223.136')">
+      Try to cilck me!
+    </div>
+
   </div>
 </div>
 </template>
@@ -24,6 +28,16 @@ name: "show04"
 }
 
 .typing-demo {
+  width: 22ch;
+  animation: typing 2s steps(22), blink .5s step-end infinite alternate;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid;
+  font-family: monospace;
+  font-size: 2em;
+}
+
+.typing-demo2 {
   width: 22ch;
   animation: typing 2s steps(22), blink .5s step-end infinite alternate;
   white-space: nowrap;
